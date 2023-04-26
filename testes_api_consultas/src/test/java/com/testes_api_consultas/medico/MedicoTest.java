@@ -30,14 +30,14 @@ public class MedicoTest {
         baseURI = "http://localhost";
         port = 8080;
 
-        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbmEuc291emFAdm9sbC5tZWQiLCJpc3MiOiJBUEkgQ29uc3VsdGFzIiwiZXhwIjoxNjgyNTIyMTQwfQ.Ne9XaimY8L6TqB_yGywp59G07A-DLFnOLlhhzYoY7Hc";
+        String token = requestLoginGetToken();
 
         given()
         .header("Authorization","Bearer " + token)
             .body("{\n" +
-                "  \"nome\": \"Amanda\", \n" +
-                "  \"email\": \"amanda@vold.med\", \n" + 
-                "  \"crm\": \"258987\", \n" + 
+                "  \"nome\": \"Maria\", \n" +
+                "  \"email\": \"maria@vold.med\", \n" + 
+                "  \"crm\": \"000000\", \n" + 
                 "  \"telefone\": \"20601257\", \n" + 
                 "  \"especialidade\": \"ORTOPEDIA\", \n" + 
                 "  \"endereco\": { \n" + 
