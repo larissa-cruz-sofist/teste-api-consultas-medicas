@@ -1,12 +1,12 @@
-package com.testes_api_consultas.medico;
+package com.testes_api_consultas.paciente;
 
-import org.junit.Test;
-import io.restassured.http.ContentType;
 import static io.restassured.RestAssured.*;
+import org.junit.Test;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import io.restassured.http.ContentType;
 
-public class MedicoTest {
+public class PacienteTest {
 
     public static String requestLoginGetToken() {
 
@@ -27,29 +27,29 @@ public class MedicoTest {
     }
 
     @Test
-    public void testCadastrarMedicoComStatus201() {
+    public void testCadastrarPacienteComStatus201() {
 
         baseURI = "http://localhost";
         port = 8080;
 
-        Medico medico = new Medico();
+        Paciente paciente = new Paciente();
         Gson gson = new GsonBuilder().create();
-        String bodyMedico = gson.toJson(medico);
+        String bodyPaciente = gson.toJson(paciente);
 
         String token = requestLoginGetToken();
 
         given()
         .header("Authorization","Bearer " + token)
-            .body(bodyMedico)
+            .body(bodyPaciente)
                 .contentType(ContentType.JSON)
         .when()
-            .post("/medicos")
+            .post("/pacientes")
         .then()
             .log().all()
             .assertThat()
                 .statusCode(201);
-                
+
 
     }
-
+    
 }
