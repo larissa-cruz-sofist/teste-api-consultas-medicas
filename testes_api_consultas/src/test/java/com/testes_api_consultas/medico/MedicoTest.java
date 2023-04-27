@@ -3,9 +3,13 @@ package com.testes_api_consultas.medico;
 import org.junit.Test;
 import io.restassured.http.ContentType;
 import static io.restassured.RestAssured.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class MedicoTest {
-    
+
+
+
     public static String requestLoginGetToken() {
 
         String token = given()
@@ -30,26 +34,15 @@ public class MedicoTest {
         baseURI = "http://localhost";
         port = 8080;
 
+        Medico medico = new Medico();
+        Gson gson = new GsonBuilder().create();
+        String bodyMedico = gson.toJson(medico);
+
         String token = requestLoginGetToken();
 
         given()
         .header("Authorization","Bearer " + token)
-            .body("{\n" +
-                "  \"nome\": \"Maria\", \n" +
-                "  \"email\": \"maria@vold.med\", \n" + 
-                "  \"crm\": \"000000\", \n" + 
-                "  \"telefone\": \"20601257\", \n" + 
-                "  \"especialidade\": \"ORTOPEDIA\", \n" + 
-                "  \"endereco\": { \n" + 
-                "   \"logradouro\": \"rua lopes\", \n" +
-                "   \"bairro\": \"mooca\", \n" +
-                "   \"cep\": \"03231896\", \n" +
-                "   \"cidade\": \"Sao Paulo\", \n" +
-                "   \"uf\": \"SP\", \n" +
-                "   \"numero\": \"2687\", \n" +
-                "   \"complemento\": \"bloco 3, apto 11\" \n" + 
-                "}\n" + 
-                "}")
+            .body(bodyMedico)
                 .contentType(ContentType.JSON)
         .when()
             .post("/medicos")
