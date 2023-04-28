@@ -1,6 +1,4 @@
-package com.testes_api_consultas.paciente;
-
-import com.testes_api_consultas.endereco.Endereco;
+package com.testes_api_consultas.Models;
 
 public class Paciente {
 
@@ -13,10 +11,10 @@ public class Paciente {
 
     public Paciente() {
 
-        this.nome = "Laura";
-        this.email = "laura@vold.med";
-        this.cpf = "422.789.335-96";
-        this.telefone = "952041089";
+        this.nome = "Joao";
+        this.email = "joao@vold.med";
+        this.cpf = "422.789.444-96";
+        this.telefone = "952041559";
         this.endereco = new Endereco();
         
     }

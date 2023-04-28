@@ -1,30 +1,15 @@
 package com.testes_api_consultas.paciente;
 
 import static io.restassured.RestAssured.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.testes_api_consultas.Models.Paciente;
+import com.testes_api_consultas.Utils.LoginUtils;
+
 import io.restassured.http.ContentType;
 
 public class PacienteTest {
-
-    public static String requestLoginGetToken() {
-
-        String token = 
-        given()
-            .body("{\n" +
-            "  \"login\": \"ana.souza@voll.med\", \n" +
-            "  \"senha\": \"123456\"\n" + "}")
-            .contentType(ContentType.JSON)
-        .when()
-            .post("/login")
-        .then()
-            .extract()
-            .path("token");
-
-    return token;
-
-    }
 
     @Test
     public void testCadastrarPacienteComStatus201() {
@@ -36,7 +21,8 @@ public class PacienteTest {
         Gson gson = new GsonBuilder().create();
         String bodyPaciente = gson.toJson(paciente);
 
-        String token = requestLoginGetToken();
+        LoginUtils loginUtils = new LoginUtils();
+        String token = loginUtils.requestLoginGetToken();
 
         given()
         .header("Authorization","Bearer " + token)
