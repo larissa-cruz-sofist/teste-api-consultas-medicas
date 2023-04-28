@@ -8,28 +8,26 @@ import com.google.gson.GsonBuilder;
 
 public class MedicoTest {
 
-
-
     public static String requestLoginGetToken() {
 
-        String token = given()
+        String token = 
+        given()
             .body("{\n" +
-            "  \"login\": \"ana.souza@voll.med\", \n" +
-            "  \"senha\": \"123456\"\n" + "}")
+                "  \"login\": \"ana.souza@voll.med\", \n" +
+                "  \"senha\": \"123456\"\n" + "}")
             .contentType(ContentType.JSON)
-        .when()
+            .when()
             .post("/login")
-        .then()
+            .then()
             .extract()
             .path("token");
 
-    return token;
+        return token;
 
     }
 
     @Test
     public void testCadastrarMedicoComStatus201() {
-
 
         baseURI = "http://localhost";
         port = 8080;
@@ -41,16 +39,15 @@ public class MedicoTest {
         String token = requestLoginGetToken();
 
         given()
-        .header("Authorization","Bearer " + token)
-            .body(bodyMedico)
+                .header("Authorization", "Bearer " + token)
+                .body(bodyMedico)
                 .contentType(ContentType.JSON)
-        .when()
-            .post("/medicos")
-        .then()
-            .log().all()
-            .assertThat()
+                .when()
+                .post("/medicos")
+                .then()
+                .log().all()
+                .assertThat()
                 .statusCode(201);
-                
 
     }
 

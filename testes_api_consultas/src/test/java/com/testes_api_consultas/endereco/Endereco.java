@@ -11,6 +11,7 @@ public class Endereco {
     public String complemento;
 
     public Endereco() {
+        
         this.logradouro = "rua indaia";
         this.bairro = "vila mariana";
         this.cep = "56987142";
