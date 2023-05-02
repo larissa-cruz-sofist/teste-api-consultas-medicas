@@ -3,6 +3,8 @@ package com.testes_api_consultas.medico;
 import io.restassured.http.ContentType;
 import static io.restassured.RestAssured.*;
 
+import com.testes_api_consultas.baseTest.BaseTest;
+
 import org.junit.jupiter.api.Test;
 
 import com.google.gson.Gson;
@@ -10,13 +12,10 @@ import com.google.gson.GsonBuilder;
 import com.testes_api_consultas.Models.Medico;
 import com.testes_api_consultas.Utils.LoginUtils;
 
-public class MedicoTest {
+public class MedicoTest extends BaseTest {
 
     @Test
     public void testCadastrarMedicoComStatus201() {
-
-        baseURI = "http://localhost";
-        port = 8080;
 
         Medico medico = new Medico();
         Gson gson = new GsonBuilder().create();

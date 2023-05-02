@@ -7,15 +7,14 @@ import com.google.gson.GsonBuilder;
 import com.testes_api_consultas.Models.Paciente;
 import com.testes_api_consultas.Utils.LoginUtils;
 
+import com.testes_api_consultas.baseTest.BaseTest;
+
 import io.restassured.http.ContentType;
 
-public class PacienteTest {
+public class PacienteTest extends BaseTest {
 
     @Test
     public void testCadastrarPacienteComStatus201() {
-
-        baseURI = "http://localhost";
-        port = 8080;
 
         Paciente paciente = new Paciente();
         Gson gson = new GsonBuilder().create();

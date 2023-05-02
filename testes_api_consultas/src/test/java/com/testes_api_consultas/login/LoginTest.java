@@ -4,16 +4,16 @@ import org.junit.jupiter.api.Test;
 import io.restassured.http.ContentType;
 import static io.restassured.RestAssured.*;
 
+import com.testes_api_consultas.baseTest.BaseTest;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.testes_api_consultas.Models.Login;
 
-public class LoginTest {
+public class LoginTest extends BaseTest {
     
     @Test
     public void testDadoUsuarioCadastradoObtenhoTokenStatusCode200(){
-        baseURI = "http://localhost";
-        port = 8080;
 
         Login login = new Login();
         Gson gson = new GsonBuilder().create();

@@ -11,10 +11,10 @@ public class Paciente {
 
     public Paciente() {
 
-        this.nome = "Joao";
-        this.email = "joao@vold.med";
-        this.cpf = "422.789.444-96";
-        this.telefone = "952041559";
+        this.nome = "Ana";
+        this.email = "ana@vold.med";
+        this.cpf = "422.111.444-96";
+        this.telefone = "952044126";
         this.endereco = new Endereco();
         
     }

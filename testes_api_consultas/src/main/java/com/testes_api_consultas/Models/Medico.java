@@ -12,10 +12,10 @@ public class Medico {
 
 
     public Medico() {
-        this.nome = "Pedro";
-        this.email = "pedro@vold.med";
-        this.crm = "333444";
-        this.telefone = "965408574";
+        this.nome = "Paula";
+        this.email = "paula@vold.med";
+        this.crm = "333111";
+        this.telefone = "965408741";
         this.especialidade = "DERMATOLOGIA";
         this.endereco = new Endereco();
         
