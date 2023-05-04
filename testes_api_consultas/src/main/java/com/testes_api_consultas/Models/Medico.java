@@ -20,10 +20,10 @@ public class Medico {
 
     public Medico criarMedico() {
 
-        this.nome = "Carlos Roberto";
-        this.email = "carlosroberto@vold.med";
-        this.crm = "555771";
-        this.telefone = "965408001";
+        this.nome = "Pamela Silva";
+        this.email = "pamelasilva@vold.med";
+        this.crm = "555588";
+        this.telefone = "965408551";
         this.especialidade = "DERMATOLOGIA";
         this.endereco = new Endereco();
 

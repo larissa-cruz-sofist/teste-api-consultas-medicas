@@ -7,6 +7,7 @@ import static io.restassured.RestAssured.*;
 
 import com.testes_api_consultas.baseTest.BaseTest;
 
+import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
 import com.google.gson.Gson;
@@ -59,7 +60,7 @@ public class MedicoTest extends BaseTest {
         .then()
             .log().all()
             .assertThat()
-                .statusCode(201)
+                .statusCode(HttpStatus.SC_CREATED)
                 .extract()
                 .response();
 
@@ -67,7 +68,7 @@ public class MedicoTest extends BaseTest {
         Medico objMedicoResponse = gson.fromJson(responseMedico.asString(), Medico.class);
         Medico objBodyMedicoPut = new Medico();
         objBodyMedicoPut.id = objMedicoResponse.id;
-        objBodyMedicoPut.nome = "Carlos";
+        objBodyMedicoPut.nome = "Pamela";
 
         //Transformar para json objBodyMedicoPut.id e objBodyMedicoPut.nome
         String bodyMedicoPut = gson.toJson(objBodyMedicoPut);
@@ -81,7 +82,7 @@ public class MedicoTest extends BaseTest {
         .then()
             .log().all()
             .assertThat()
-                .statusCode(200);
+                .statusCode(HttpStatus.SC_OK);
     }
 
 }

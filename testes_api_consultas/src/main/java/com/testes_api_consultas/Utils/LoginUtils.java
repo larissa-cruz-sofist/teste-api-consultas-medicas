@@ -11,8 +11,9 @@ public class LoginUtils {
 
     public String requestLoginGetToken() {
 
-        baseURI = "http://localhost";
-        port = 8080;
+        PropertiesUtils propertiesUtils = new PropertiesUtils();
+        baseURI = propertiesUtils.getProperty("baseURI");
+        port = Integer.parseInt(propertiesUtils.getProperty("port"));
 
         Login login = new Login();
         Gson gson = new GsonBuilder().create();
