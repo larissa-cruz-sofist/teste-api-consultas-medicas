@@ -28,16 +28,15 @@ public class MedicoTest extends BaseTest {
         String token = loginUtils.requestLoginGetToken();
 
         given()
-        .header("Authorization","Bearer " + token)
-            .body(bodyMedico)
+                .header("Authorization", "Bearer " + token)
+                .body(bodyMedico)
                 .contentType(ContentType.JSON)
-        .when()
-            .post("/medicos")
-        .then()
-            .log().all()
-            .assertThat()
+                .when()
+                .post("/medicos")
+                .then()
+                .log().all()
+                .assertThat()
                 .statusCode(201);
-                
 
     }
 
