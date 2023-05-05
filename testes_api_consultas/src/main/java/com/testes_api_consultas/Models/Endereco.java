@@ -1,4 +1,4 @@
-package com.testes_api_consultas.endereco;
+package com.testes_api_consultas.Models;
 
 public class Endereco {
 
@@ -17,8 +17,8 @@ public class Endereco {
         this.cep = "56987142";
         this.cidade = "sao paulo";
         this.uf = "sp";
-        this.numero = "100";
-        this.complemento = "bloco 3, apto 13";
+        this.numero = "150";
+        this.complemento = "bloco 2, apto 13";
     }
 
     

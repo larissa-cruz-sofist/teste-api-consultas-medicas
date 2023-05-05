@@ -1,20 +1,26 @@
 package com.testes_api_consultas.login;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import io.restassured.http.ContentType;
 import static io.restassured.RestAssured.*;
 
-public class LoginTest {
+import com.testes_api_consultas.baseTest.BaseTest;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.testes_api_consultas.Models.Login;
+
+public class LoginTest extends BaseTest {
     
     @Test
     public void testDadoUsuarioCadastradoObtenhoTokenStatusCode200(){
-        baseURI = "http://localhost";
-        port = 8080;
+
+        Login login = new Login();
+        Gson gson = new GsonBuilder().create();
+        String bodyLogin = gson.toJson(login);
 
          given()
-            .body("{\n" +
-            "  \"login\": \"ana.souza@voll.med\", \n" +
-            "  \"senha\": \"123456\"\n" + "}")
+            .body(bodyLogin)
             .contentType(ContentType.JSON)
         .when()
             .post("/login")
