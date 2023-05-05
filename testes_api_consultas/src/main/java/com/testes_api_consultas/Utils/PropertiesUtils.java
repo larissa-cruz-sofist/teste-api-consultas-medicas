@@ -7,8 +7,7 @@ public class PropertiesUtils {
     
     public String getProperty(String valorChave) {
 
-        String rootPath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-        String appConfigPath = rootPath + "com/testes_api_consultas/resources/application.properties";
+        String appConfigPath = "/C:/Users/larissa.cruz_sofist/Desktop/Projetos/testes-api-consultas/testes_api_consultas/src/test/java/com/testes_api_consultas/resources/application.properties";
         Properties appProps = new Properties();
 
         try{
