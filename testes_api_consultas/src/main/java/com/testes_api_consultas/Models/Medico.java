@@ -33,7 +33,7 @@ public class Medico {
         this.email = fakeValuesService.bothify("???????##@vold.med");
         this.crm =  fakeValuesService.numerify("######");
         this.telefone = faker.phoneNumber().cellPhone();
-        this.especialidade = "DERMATOLOGIA";
+        this.especialidade = EspecialidadeMedico.CARDIOLOGIA.toString();
         this.endereco = new Endereco().criarEndereco();
 
         return this;
