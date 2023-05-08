@@ -35,9 +35,9 @@ public class MedicoTest extends BaseTest {
                 .header("Authorization", "Bearer " + token)
                 .body(bodyMedico)
                 .contentType(ContentType.JSON)
-                .when()
+            .when()
                 .post("/medicos")
-                .then()
+            .then()
                 .log().all()
                 .assertThat()
                 .statusCode(201);

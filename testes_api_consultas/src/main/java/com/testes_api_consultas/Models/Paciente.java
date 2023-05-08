@@ -8,6 +8,7 @@ import com.github.javafaker.service.RandomService;
 
 public class Paciente {
 
+    public String id;
     public String nome;
     public String email;
     public String cpf;

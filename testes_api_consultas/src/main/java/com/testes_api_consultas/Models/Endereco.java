@@ -1,7 +1,6 @@
 package com.testes_api_consultas.Models;
 
 import java.util.Locale;
-import java.util.Random;
 
 import com.github.javafaker.Faker;
 import com.github.javafaker.service.FakeValuesService;
