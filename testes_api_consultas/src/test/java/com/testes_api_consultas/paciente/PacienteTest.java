@@ -16,7 +16,7 @@ public class PacienteTest extends BaseTest {
     @Test
     public void testCadastrarPacienteComStatus201() {
 
-        Paciente paciente = new Paciente();
+        Paciente paciente = new Paciente().criarPaciente();
         Gson gson = new GsonBuilder().create();
         String bodyPaciente = gson.toJson(paciente);
 

@@ -1,6 +1,7 @@
 package com.testes_api_consultas.Models;
 
 import java.util.Locale;
+import java.util.Random;
 
 import com.github.javafaker.Faker;
 import com.github.javafaker.service.FakeValuesService;
@@ -29,10 +30,10 @@ public class Endereco {
         Faker faker = new Faker(new Locale("pt-BR"));
         FakeValuesService fakeValuesService = new FakeValuesService(new Locale("pt-BR"), new RandomService());
         
+        
         this.logradouro = faker.address().streetName();
         this.bairro = faker.address().lastName();
         this.cep = fakeValuesService.numerify("########");
-        //this.cep = faker.address().zipCode();
         this.cidade = faker.address().city();
         this.uf = faker.address().stateAbbr();
         this.numero = faker.address().buildingNumber();
