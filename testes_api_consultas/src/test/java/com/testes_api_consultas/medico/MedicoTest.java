@@ -5,6 +5,8 @@ import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.*;
 
+import java.util.Locale;
+
 import com.testes_api_consultas.baseTest.BaseTest;
 
 import org.apache.http.HttpStatus;
@@ -14,6 +16,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.testes_api_consultas.Models.Medico;
 import com.testes_api_consultas.Utils.LoginUtils;
+
+import com.github.javafaker.Faker;
 
 public class MedicoTest extends BaseTest {
 
@@ -31,9 +35,9 @@ public class MedicoTest extends BaseTest {
                 .header("Authorization", "Bearer " + token)
                 .body(bodyMedico)
                 .contentType(ContentType.JSON)
-                .when()
+            .when()
                 .post("/medicos")
-                .then()
+            .then()
                 .log().all()
                 .assertThat()
                 .statusCode(201);
@@ -67,7 +71,8 @@ public class MedicoTest extends BaseTest {
         Medico objMedicoResponse = gson.fromJson(responseMedico.asString(), Medico.class);
         Medico objBodyMedicoPut = new Medico();
         objBodyMedicoPut.id = objMedicoResponse.id;
-        objBodyMedicoPut.nome = "Pamela";
+        Faker faker = new Faker(new Locale("pt-BR"));
+        objBodyMedicoPut.nome = faker.name().fullName();
 
         //Transformar para json objBodyMedicoPut.id e objBodyMedicoPut.nome
         String bodyMedicoPut = gson.toJson(objBodyMedicoPut);

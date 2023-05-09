@@ -1,7 +1,14 @@
 package com.testes_api_consultas.Models;
 
+import java.util.Locale;
+
+import com.github.javafaker.Faker;
+import com.github.javafaker.service.FakeValuesService;
+import com.github.javafaker.service.RandomService;
+
 public class Paciente {
 
+    public String id;
     public String nome;
     public String email;
     public String cpf;
@@ -11,12 +18,22 @@ public class Paciente {
 
     public Paciente() {
 
-        this.nome = "Anny";
-        this.email = "anny@vold.med";
-        this.cpf = "422.111.413-96";
-        this.telefone = "952044126";
-        this.endereco = new Endereco();
         
+    }
+
+    public Paciente criarPaciente() {
+
+        Faker faker = new Faker(new Locale("pt-BR"));
+        FakeValuesService fakeValuesService = new FakeValuesService(new Locale("pt-BR"), new RandomService());
+
+        this.nome = faker.name().fullName();
+        this.email = fakeValuesService.bothify("???????##@vold.med");
+        this.cpf = fakeValuesService.bothify("###.###.###-##");
+        this.telefone = faker.phoneNumber().cellPhone();
+        this.endereco = new Endereco().criarEndereco();
+
+        return this;
+
     }
 
 }
