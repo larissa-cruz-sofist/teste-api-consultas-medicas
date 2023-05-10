@@ -2,6 +2,7 @@ package com.testes_api_consultas.paciente;
 
 import static io.restassured.RestAssured.*;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.testes_api_consultas.Models.Paciente;
@@ -18,6 +19,7 @@ import com.github.javafaker.Faker;
 public class PacienteTest extends BaseTest {
 
     @Test
+    @DisplayName("Teste Cadastrar Novo Paciente")
     public void testCadastrarPacienteComStatus201() {
 
         Paciente paciente = new Paciente().criarPaciente();
@@ -36,12 +38,13 @@ public class PacienteTest extends BaseTest {
             .then()
                 .log().all()
                 .assertThat()
-                .statusCode(201);
+                .statusCode(HttpStatus.SC_CREATED);
 
 
     }
 
     @Test
+    @DisplayName("Teste Alterar Nome Paciente")
     public void testAlterarNomeDePacienteCadastradoComStatus200() {
 
         Paciente paciente = new Paciente().criarPaciente();
