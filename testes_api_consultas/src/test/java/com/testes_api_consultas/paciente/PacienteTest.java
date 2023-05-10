@@ -1,18 +1,21 @@
 package com.testes_api_consultas.paciente;
 
 import static io.restassured.RestAssured.*;
+import org.hamcrest.Matchers;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.testes_api_consultas.Models.Paciente;
 import com.testes_api_consultas.Utils.LoginUtils;
+import com.testes_api_consultas.Utils.PacienteUtils;
+
 import java.util.Locale;
 
 import com.testes_api_consultas.baseTest.BaseTest;
 
 import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
 import com.github.javafaker.Faker;
 
@@ -40,7 +43,6 @@ public class PacienteTest extends BaseTest {
                 .assertThat()
                 .statusCode(HttpStatus.SC_CREATED);
 
-
     }
 
     @Test
@@ -51,31 +53,20 @@ public class PacienteTest extends BaseTest {
         Gson gson = new GsonBuilder().create();
         String bodyPaciente = gson.toJson(paciente);
 
-        LoginUtils loginUtils = new LoginUtils();
-        String token = loginUtils.requestLoginGetToken();
+        PacienteUtils pacienteUtils = new PacienteUtils();
+        Paciente objPacienteResponse = pacienteUtils.cadastrarPaciente(bodyPaciente);    
 
-        Response responsePaciente = (Response) given()
-        .header("Authorization","Bearer " + token)
-            .body(bodyPaciente)
-                .contentType(ContentType.JSON)
-        .when()
-            .post("/pacientes")
-        .then()
-            .log().all()
-            .assertThat()
-                .statusCode(HttpStatus.SC_CREATED)
-                .extract()
-                .response();
-
-        //Transformar o json em objeto Java        
-        Paciente objPacienteResponse = gson.fromJson(responsePaciente.asString(), Paciente.class);
         Paciente objBodyPacientePut = new Paciente();
         objBodyPacientePut.id = objPacienteResponse.id;
         Faker faker = new Faker(new Locale("pt-BR"));
-        objBodyPacientePut.nome = faker.name().fullName();
+        String novoNome = faker.name().fullName();
+        objBodyPacientePut.nome = novoNome;
 
         //Transformar para json objBodyPacientePut.id e objBodyPacientePut.nome
         String bodyPacientePut = gson.toJson(objBodyPacientePut);
+
+        LoginUtils loginUtils = new LoginUtils();
+        String token = loginUtils.requestLoginGetToken();
         
         given()
         .header("Authorization", "Bearer " + token)
@@ -86,7 +77,9 @@ public class PacienteTest extends BaseTest {
         .then()
             .log().all()
             .assertThat()
-                .statusCode(HttpStatus.SC_OK);
+                .statusCode(HttpStatus.SC_OK)
+                .body("nome", Matchers.equalTo(novoNome));
+
     }
     
 }
