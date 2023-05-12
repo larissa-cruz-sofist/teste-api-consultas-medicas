@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.testes_api_consultas.Models.Paciente;
+import com.testes_api_consultas.Models.Endereco;
 import com.testes_api_consultas.Utils.LoginUtils;
 import com.testes_api_consultas.Utils.PacienteUtils;
 
@@ -79,6 +80,72 @@ public class PacienteTest extends BaseTest {
             .assertThat()
                 .statusCode(HttpStatus.SC_OK)
                 .body("nome", Matchers.equalTo(novoNome));
+
+    }
+
+    @Test
+    @DisplayName("Teste Alterar Numero do Endereco do Paciente")
+    public void testAlterarNumeroEnderecoDePacienteCadastradoComStatus200() {
+
+        Paciente paciente = new Paciente().criarPaciente();
+        Gson gson = new GsonBuilder().create();
+        String bodyPaciente = gson.toJson(paciente);
+
+        PacienteUtils pacienteUtils = new PacienteUtils();
+        Paciente objPacienteResponse = pacienteUtils.cadastrarPaciente(bodyPaciente);
+
+        Paciente objBodyPacientePut = new Paciente();
+        Endereco endereco = new Endereco();
+        objBodyPacientePut.endereco = endereco;
+        objBodyPacientePut.endereco.numero = endereco.numero;
+
+        objBodyPacientePut.id = objPacienteResponse.id;
+        Faker faker = new Faker(new Locale("pt-BR"));
+        String novoNumeroEndereco = faker.address().buildingNumber();
+        objBodyPacientePut.endereco.numero = novoNumeroEndereco;
+
+        String bodyPacientePut = gson.toJson(objBodyPacientePut);
+
+        LoginUtils loginUtils = new LoginUtils();
+        String token = loginUtils.requestLoginGetToken();
+        
+        given()
+        .header("Authorization", "Bearer " + token)
+            .body(bodyPacientePut)
+                .contentType(ContentType.JSON)
+        .when()
+            .put("/pacientes")
+        .then()
+            .log().all()
+            .assertThat()
+                .statusCode(HttpStatus.SC_OK)
+                .body("endereco.numero", Matchers.equalTo(novoNumeroEndereco));
+
+
+    }
+
+    @Test
+    @DisplayName("Teste excluir paciente pelo id")
+    public void testExcluirPacientePeloIdComStatus204() {
+
+        Paciente paciente = new Paciente().criarPaciente();
+        Gson gson = new GsonBuilder().create();
+        String bodyPaciente = gson.toJson(paciente);
+
+        PacienteUtils pacienteUtils = new PacienteUtils();
+        Paciente pacienteCadastrado = pacienteUtils.cadastrarPaciente(bodyPaciente);
+
+        LoginUtils loginUtils = new LoginUtils();
+        String token = loginUtils.requestLoginGetToken();
+
+        given()
+        .header("Authorization", "Bearer " + token)
+        .when()
+            .delete("/medicos/" + pacienteCadastrado.id)
+        .then()
+            .log().all()
+            .assertThat()
+            .statusCode(HttpStatus.SC_NO_CONTENT);
 
     }
     

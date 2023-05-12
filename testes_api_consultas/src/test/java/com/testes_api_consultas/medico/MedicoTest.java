@@ -125,5 +125,30 @@ public class MedicoTest extends BaseTest {
 
     }
 
+    @Test
+    @DisplayName("Teste excluir médico pelo id")
+    public void testExcluirMedicoPeloIdComStatus204() {
+
+        Medico medico = new Medico().criarMedico();
+        Gson gson = new GsonBuilder().create();
+        String bodyMedico = gson.toJson(medico);
+
+        MedicoUtils medicoUtils = new MedicoUtils();
+        Medico medicoCadastrado = medicoUtils.cadastrarMedico(bodyMedico);
+
+        LoginUtils loginUtils = new LoginUtils();
+        String token = loginUtils.requestLoginGetToken();
+
+        given()
+        .header("Authorization", "Bearer " + token)
+        .when()
+            .delete("/medicos/" + medicoCadastrado.id)
+        .then()
+            .log().all()
+            .assertThat()
+            .statusCode(HttpStatus.SC_NO_CONTENT);
+
+    }
+
 
 }
