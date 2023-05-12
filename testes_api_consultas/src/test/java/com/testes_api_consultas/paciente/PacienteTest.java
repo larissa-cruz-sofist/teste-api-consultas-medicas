@@ -123,5 +123,30 @@ public class PacienteTest extends BaseTest {
 
 
     }
+
+    @Test
+    @DisplayName("Teste excluir paciente pelo id")
+    public void testExcluirPacientePeloIdComStatus204() {
+
+        Paciente paciente = new Paciente().criarPaciente();
+        Gson gson = new GsonBuilder().create();
+        String bodyPaciente = gson.toJson(paciente);
+
+        PacienteUtils pacienteUtils = new PacienteUtils();
+        Paciente pacienteCadastrado = pacienteUtils.cadastrarPaciente(bodyPaciente);
+
+        LoginUtils loginUtils = new LoginUtils();
+        String token = loginUtils.requestLoginGetToken();
+
+        given()
+        .header("Authorization", "Bearer " + token)
+        .when()
+            .delete("/medicos/" + pacienteCadastrado.id)
+        .then()
+            .log().all()
+            .assertThat()
+            .statusCode(HttpStatus.SC_NO_CONTENT);
+
+    }
     
 }
