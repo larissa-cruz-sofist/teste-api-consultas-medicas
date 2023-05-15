@@ -14,6 +14,7 @@ public class Medico {
     public String crm;
     public String telefone;
     public String especialidade;
+    public Boolean ativo;
 
 
     public Endereco endereco;

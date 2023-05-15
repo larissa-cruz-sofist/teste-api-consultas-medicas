@@ -3,6 +3,8 @@ package com.testes_api_consultas.medico;
 import io.restassured.http.ContentType;
 
 import static io.restassured.RestAssured.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import org.hamcrest.Matchers;
 
 import java.util.Locale;
@@ -148,7 +150,8 @@ public class MedicoTest extends BaseTest {
             .assertThat()
             .statusCode(HttpStatus.SC_NO_CONTENT);
 
+        Medico medicoCancelado = medicoUtils.obterMedicoPorId(medicoCadastrado.id);
+        assertFalse(medicoCancelado.ativo);
     }
-
 
 }
