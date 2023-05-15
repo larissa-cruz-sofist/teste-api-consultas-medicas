@@ -34,5 +34,28 @@ public class MedicoUtils {
         return medicoCadastrado;
 
     }
+
+    public Medico obterMedicoPorId(String id) {
+        
+        LoginUtils loginUtils = new LoginUtils();
+        String token = loginUtils.requestLoginGetToken();
+
+        Response responseMedico = (Response) given()
+        .header("Authorization","Bearer " + token)
+        .when()
+            .get("/medicos/" + id)
+        .then()
+            .log().all()
+            .assertThat()
+                .statusCode(HttpStatus.SC_OK)
+                .extract()
+                .response();
+
+        Gson gson = new Gson();
+        Medico medico = gson.fromJson(responseMedico.asString(), Medico.class);
+
+        return medico;
+
+    }
     
 }
