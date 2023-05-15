@@ -34,5 +34,28 @@ public class PacienteUtils {
         return pacienteCadastrado;
 
     }
+
+    public Paciente obterPacientePorId(String id) {
+        
+        LoginUtils loginUtils = new LoginUtils();
+        String token = loginUtils.requestLoginGetToken();
+
+        Response responsePaciente = (Response) given()
+        .header("Authorization","Bearer " + token)
+        .when()
+            .get("/pacientes/" + id)
+        .then()
+            .log().all()
+            .assertThat()
+                .statusCode(HttpStatus.SC_OK)
+                .extract()
+                .response();
+
+        Gson gson = new Gson();
+        Paciente paciente = gson.fromJson(responsePaciente.asString(), Paciente.class);
+
+        return paciente;
+
+    }
     
 }
