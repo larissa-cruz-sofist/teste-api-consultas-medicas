@@ -1,6 +1,8 @@
 package com.testes_api_consultas.paciente;
 
 import static io.restassured.RestAssured.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import org.hamcrest.Matchers;
 
 import org.junit.jupiter.api.Test;
@@ -141,11 +143,14 @@ public class PacienteTest extends BaseTest {
         given()
         .header("Authorization", "Bearer " + token)
         .when()
-            .delete("/medicos/" + pacienteCadastrado.id)
+            .delete("/pacientes/" + pacienteCadastrado.id)
         .then()
             .log().all()
             .assertThat()
             .statusCode(HttpStatus.SC_NO_CONTENT);
+
+        Paciente pacienteCancelado = pacienteUtils.obterPacientePorId(pacienteCadastrado.id);
+        assertFalse(pacienteCancelado.ativo);
 
     }
     

@@ -13,6 +13,7 @@ public class Paciente {
     public String email;
     public String cpf;
     public String telefone;
+    public Boolean ativo;
 
     public Endereco endereco;
 
