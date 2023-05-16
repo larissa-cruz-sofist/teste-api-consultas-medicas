@@ -8,6 +8,7 @@ public class Consulta {
     public String idPaciente;
     public String especialidade;
     public String data;
+    public String idMedico;
 
     public Consulta() {
 
@@ -22,6 +23,19 @@ public class Consulta {
         this.data = dataEHora.toString();
 
         return this;
+    }
+
+    public Consulta criarConsultaMedicoDefinido(String idPaciente, String idMedico) {
+
+        LocalDateTime dataEHora = LocalDateTime.now().plusHours(1);
+
+        this.idPaciente = idPaciente;
+        this.idMedico = idMedico;
+        this.data = dataEHora.toString();
+
+        return this;
+
+
     }
     
 }
