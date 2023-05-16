@@ -1,8 +1,11 @@
 package com.testes_api_consultas.Models;
 
+import java.time.LocalDateTime;
+
+
 public class Consulta {
 
-    public int idPaciente;
+    public String idPaciente;
     public String especialidade;
     public String data;
 
@@ -10,11 +13,13 @@ public class Consulta {
 
     }
 
-    public Consulta criarConsultaEspecialidadeDefinida() {
+    public Consulta criarConsultaEspecialidadeDefinida(String idPaciente) {
 
-        this.idPaciente = 66;
-        this.especialidade = EspecialidadeMedico.ORTOPEDIA.toString();
-        this.data = "2023-09-16T16:30";
+        LocalDateTime dataEHora = LocalDateTime.now().plusHours(1);
+
+        this.idPaciente = idPaciente;
+        this.especialidade = EspecialidadeMedico.DERMATOLOGIA.toString();
+        this.data = dataEHora.toString();
 
         return this;
     }
