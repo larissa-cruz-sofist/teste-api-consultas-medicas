@@ -1,6 +1,9 @@
 package com.testes_api_consultas.Models;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjusters;
 
 
 public class Consulta {
@@ -42,6 +45,17 @@ public class Consulta {
     public Consulta criarConsultaComMenosdeTrintaMinAntecedencia(String idPaciente) {
 
         LocalDateTime dataEHora = LocalDateTime.now().plusMinutes(20);
+
+        this.idPaciente = idPaciente;
+        this.especialidade = EspecialidadeMedico.DERMATOLOGIA.toString();
+        this.data = dataEHora.toString();
+
+        return this;
+    }
+
+    public Consulta criarConsultaNoDomingo(String idPaciente) {
+
+        LocalDateTime dataEHora = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.SUNDAY)).atTime(10, 0);
 
         this.idPaciente = idPaciente;
         this.especialidade = EspecialidadeMedico.DERMATOLOGIA.toString();
