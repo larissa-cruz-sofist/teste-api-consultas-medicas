@@ -25,6 +25,7 @@ public class Consulta {
         return this;
     }
 
+
     public Consulta criarConsultaMedicoDefinido(String idPaciente, String idMedico) {
 
         LocalDateTime dataEHora = LocalDateTime.now().plusHours(1);
@@ -36,6 +37,17 @@ public class Consulta {
         return this;
 
 
+    }
+
+    public Consulta criarConsultaComMenosdeTrintaMinAntecedencia(String idPaciente) {
+
+        LocalDateTime dataEHora = LocalDateTime.now().plusMinutes(20);
+
+        this.idPaciente = idPaciente;
+        this.especialidade = EspecialidadeMedico.DERMATOLOGIA.toString();
+        this.data = dataEHora.toString();
+
+        return this;
     }
     
 }

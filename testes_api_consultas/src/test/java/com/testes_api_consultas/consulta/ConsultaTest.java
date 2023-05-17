@@ -15,7 +15,10 @@ import com.testes_api_consultas.Utils.MedicoUtils;
 import com.testes_api_consultas.Utils.PacienteUtils;
 import com.testes_api_consultas.baseTest.BaseTest;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 
 public class ConsultaTest extends BaseTest {
 
@@ -82,6 +85,45 @@ public class ConsultaTest extends BaseTest {
                 .log().all()
                 .assertThat()
                 .statusCode(HttpStatus.SC_OK);
+
+    }
+
+    @Test
+    @DisplayName("Teste Agendar Consulta com Menos de Trinta Minutos de Antecedencia")
+    public void testAgendarConsultaComMenosTrintaMinComStatus400() {
+
+        Paciente paciente = new Paciente().criarPaciente();
+        Gson gson = new GsonBuilder().create();
+        String bodyPaciente = gson.toJson(paciente);
+
+        PacienteUtils pacienteUtils = new PacienteUtils();
+        Paciente objPacienteResponse = pacienteUtils.cadastrarPaciente(bodyPaciente);
+
+        Consulta consulta = new Consulta().criarConsultaComMenosdeTrintaMinAntecedencia(objPacienteResponse.id);
+        String bodyConsulta = gson.toJson(consulta);
+
+        LoginUtils loginUtils = new LoginUtils();
+        String token = loginUtils.requestLoginGetToken();
+
+        Response responseConsulta = (Response) 
+
+            given()
+                .header("Authorization","Bearer " + token)
+                .body(bodyConsulta)
+                .contentType(ContentType.JSON)
+            .when()
+                .post("/consultas")
+            .then()
+                .log().all()
+                .assertThat()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .extract()
+                .body();
+
+            
+            String response400 = responseConsulta.getBody().asString();
+
+            assertEquals("Consulta deve ser agendada com antecedência mínima de 30 minutos", response400);
 
     }
 
