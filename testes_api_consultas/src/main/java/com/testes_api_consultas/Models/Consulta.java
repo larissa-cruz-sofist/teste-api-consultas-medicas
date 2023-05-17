@@ -64,9 +64,20 @@ public class Consulta {
         return this;
     }
 
-    public Consulta criarAntesDaAberturaDaClinica(String idPaciente) {
+    public Consulta criarConsultaAntesDaAberturaDaClinica(String idPaciente) {
 
         LocalDateTime dataEHora = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(06, 55);
+
+        this.idPaciente = idPaciente;
+        this.especialidade = EspecialidadeMedico.DERMATOLOGIA.toString();
+        this.data = dataEHora.toString();
+
+        return this;
+    }
+
+    public Consulta criarConsultaDepoisDoEncerramentoDaClinica(String idPaciente) {
+
+        LocalDateTime dataEHora = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(19, 0);
 
         this.idPaciente = idPaciente;
         this.especialidade = EspecialidadeMedico.DERMATOLOGIA.toString();
