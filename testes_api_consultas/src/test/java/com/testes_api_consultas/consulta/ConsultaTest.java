@@ -244,5 +244,43 @@ public class ConsultaTest extends BaseTest {
 
     }
 
+    @Test
+    @DisplayName("Teste Agendar Consulta com Medico Excluído")
+    public void testAgendarConsultaComMedicoExcluidoComStatus400() {
+
+        Paciente paciente = new Paciente().criarPaciente();
+        Gson gson = new GsonBuilder().create();
+        String bodyPaciente = gson.toJson(paciente);
+
+        PacienteUtils pacienteUtils = new PacienteUtils();
+        Paciente objPacienteResponse = pacienteUtils.cadastrarPaciente(bodyPaciente);
+
+        Medico medico = new Medico().criarMedico();
+        String bodyMedico = gson.toJson(medico);
+
+        MedicoUtils medicoUtils = new MedicoUtils();
+        Medico objMedicoResponse = medicoUtils.cadastrarMedico(bodyMedico);
+
+        String medicoExcluidoId = medicoUtils.excluirMedicoPorId(objMedicoResponse.id);
+
+        Consulta consulta = new Consulta().criarConsultaMedicoDefinido(objPacienteResponse.id, medicoExcluidoId);
+        String bodyConsulta = gson.toJson(consulta);
+
+        LoginUtils loginUtils = new LoginUtils();
+        String token = loginUtils.requestLoginGetToken();
+
+        given()
+                .header("Authorization","Bearer " + token)
+                .body(bodyConsulta)
+                .contentType(ContentType.JSON)
+            .when()
+                .post("/consultas")
+            .then()
+                .log().all()
+                .assertThat()
+                .statusCode(HttpStatus.SC_BAD_REQUEST);
+
+    }
+
 
 }
