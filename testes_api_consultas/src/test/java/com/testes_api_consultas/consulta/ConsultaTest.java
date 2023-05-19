@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import com.testes_api_consultas.Models.Consulta;
 import com.testes_api_consultas.Models.Medico;
 import com.testes_api_consultas.Models.Paciente;
+import com.testes_api_consultas.Utils.ConsultaUtils;
 import com.testes_api_consultas.Utils.LoginUtils;
 import com.testes_api_consultas.Utils.MedicoUtils;
 import com.testes_api_consultas.Utils.PacienteUtils;
@@ -31,7 +32,7 @@ public class ConsultaTest extends BaseTest {
         String bodyPaciente = gson.toJson(paciente);
 
         PacienteUtils pacienteUtils = new PacienteUtils();
-        Paciente objPacienteResponse = pacienteUtils.cadastrarPaciente(bodyPaciente);
+        Paciente objPacienteResponse = pacienteUtils.requestCadastrarPaciente(bodyPaciente);
 
         Consulta consulta = new Consulta().criarConsultaEspecialidadeDefinida(objPacienteResponse.id);
         String bodyConsulta = gson.toJson(consulta);
@@ -61,13 +62,13 @@ public class ConsultaTest extends BaseTest {
         String bodyPaciente = gson.toJson(paciente);
 
         PacienteUtils pacienteUtils = new PacienteUtils();
-        Paciente objPacienteResponse = pacienteUtils.cadastrarPaciente(bodyPaciente);
+        Paciente objPacienteResponse = pacienteUtils.requestCadastrarPaciente(bodyPaciente);
 
         Medico medico = new Medico().criarMedico();
         String bodyMedico = gson.toJson(medico);
 
         MedicoUtils medicoUtils = new MedicoUtils();
-        Medico objMedicoResponse = medicoUtils.cadastrarMedico(bodyMedico);
+        Medico objMedicoResponse = medicoUtils.requestCadastrarMedico(bodyMedico);
 
         Consulta consulta = new Consulta().criarConsultaMedicoDefinido(objPacienteResponse.id, objMedicoResponse.id);
         String bodyConsulta = gson.toJson(consulta);
@@ -97,7 +98,7 @@ public class ConsultaTest extends BaseTest {
         String bodyPaciente = gson.toJson(paciente);
 
         PacienteUtils pacienteUtils = new PacienteUtils();
-        Paciente objPacienteResponse = pacienteUtils.cadastrarPaciente(bodyPaciente);
+        Paciente objPacienteResponse = pacienteUtils.requestCadastrarPaciente(bodyPaciente);
 
         Consulta consulta = new Consulta().criarConsultaComMenosdeTrintaMinAntecedencia(objPacienteResponse.id);
         String bodyConsulta = gson.toJson(consulta);
@@ -118,7 +119,7 @@ public class ConsultaTest extends BaseTest {
                 .assertThat()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .extract()
-                .body();
+                .response();
 
             
             String response400 = responseConsulta.getBody().asString();
@@ -136,7 +137,7 @@ public class ConsultaTest extends BaseTest {
         String bodyPaciente = gson.toJson(paciente);
 
         PacienteUtils pacienteUtils = new PacienteUtils();
-        Paciente objPacienteResponse = pacienteUtils.cadastrarPaciente(bodyPaciente);
+        Paciente objPacienteResponse = pacienteUtils.requestCadastrarPaciente(bodyPaciente);
 
         Consulta consulta = new Consulta().criarConsultaNoDomingo(objPacienteResponse.id);
         String bodyConsulta = gson.toJson(consulta);
@@ -157,7 +158,7 @@ public class ConsultaTest extends BaseTest {
                 .assertThat()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .extract()
-                .body();
+                .response();
 
             
             String response400 = responseConsulta.getBody().asString();
@@ -175,7 +176,7 @@ public class ConsultaTest extends BaseTest {
         String bodyPaciente = gson.toJson(paciente);
 
         PacienteUtils pacienteUtils = new PacienteUtils();
-        Paciente objPacienteResponse = pacienteUtils.cadastrarPaciente(bodyPaciente);
+        Paciente objPacienteResponse = pacienteUtils.requestCadastrarPaciente(bodyPaciente);
 
         Consulta consulta = new Consulta().criarConsultaAntesDaAberturaDaClinica(objPacienteResponse.id);
         String bodyConsulta = gson.toJson(consulta);
@@ -196,7 +197,7 @@ public class ConsultaTest extends BaseTest {
                 .assertThat()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .extract()
-                .body();
+                .response();
 
             
             String response400 = responseConsulta.getBody().asString();
@@ -214,7 +215,7 @@ public class ConsultaTest extends BaseTest {
         String bodyPaciente = gson.toJson(paciente);
 
         PacienteUtils pacienteUtils = new PacienteUtils();
-        Paciente objPacienteResponse = pacienteUtils.cadastrarPaciente(bodyPaciente);
+        Paciente objPacienteResponse = pacienteUtils.requestCadastrarPaciente(bodyPaciente);
 
         Consulta consulta = new Consulta().criarConsultaDepoisDoEncerramentoDaClinica(objPacienteResponse.id);
         String bodyConsulta = gson.toJson(consulta);
@@ -235,7 +236,7 @@ public class ConsultaTest extends BaseTest {
                 .assertThat()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .extract()
-                .body();
+                .response();
 
             
             String response400 = responseConsulta.getBody().asString();
@@ -253,23 +254,24 @@ public class ConsultaTest extends BaseTest {
         String bodyPaciente = gson.toJson(paciente);
 
         PacienteUtils pacienteUtils = new PacienteUtils();
-        Paciente objPacienteResponse = pacienteUtils.cadastrarPaciente(bodyPaciente);
+        Paciente objPacienteResponse = pacienteUtils.requestCadastrarPaciente(bodyPaciente);
 
         Medico medico = new Medico().criarMedico();
         String bodyMedico = gson.toJson(medico);
 
         MedicoUtils medicoUtils = new MedicoUtils();
-        Medico objMedicoResponse = medicoUtils.cadastrarMedico(bodyMedico);
+        Medico objMedicoResponse = medicoUtils.requestCadastrarMedico(bodyMedico);
 
-        String medicoExcluidoId = medicoUtils.excluirMedicoPorId(objMedicoResponse.id);
+        medicoUtils.requestExcluirMedicoPorId(objMedicoResponse.id);
 
-        Consulta consulta = new Consulta().criarConsultaMedicoDefinido(objPacienteResponse.id, medicoExcluidoId);
+        Consulta consulta = new Consulta().criarConsultaMedicoDefinido(objPacienteResponse.id, objMedicoResponse.id);
         String bodyConsulta = gson.toJson(consulta);
 
         LoginUtils loginUtils = new LoginUtils();
         String token = loginUtils.requestLoginGetToken();
 
-        given()
+        Response responseConsulta = (Response) 
+            given()
                 .header("Authorization","Bearer " + token)
                 .body(bodyConsulta)
                 .contentType(ContentType.JSON)
@@ -278,9 +280,63 @@ public class ConsultaTest extends BaseTest {
             .then()
                 .log().all()
                 .assertThat()
-                .statusCode(HttpStatus.SC_BAD_REQUEST);
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .extract()
+                .response();
+
+
+            String response400 = responseConsulta.getBody().asString();
+
+            assertEquals("Consulta não pode ser agendada com médico excluído", response400);
 
     }
 
+    @Test
+    @DisplayName("Teste Agendar Outra Consulta no mesmo horario com mesmo Medico")
+    public void testAgendarOutraConsultaNoMesmoHorarioComMesmoMedicoComStatus400() {
+
+        Paciente paciente = new Paciente().criarPaciente();
+        Gson gson = new GsonBuilder().create();
+        String bodyPaciente = gson.toJson(paciente);
+
+        PacienteUtils pacienteUtils = new PacienteUtils();
+        Paciente objPacienteResponse = pacienteUtils.requestCadastrarPaciente(bodyPaciente);
+
+        Medico medico = new Medico().criarMedico();
+        String bodyMedico = gson.toJson(medico);
+
+        MedicoUtils medicoUtils = new MedicoUtils();
+        Medico objMedicoResponse = medicoUtils.requestCadastrarMedico(bodyMedico);
+
+        Consulta consulta = new Consulta().criarConsultaMedicoDefinido(objPacienteResponse.id, objMedicoResponse.id);
+        String bodyConsulta = gson.toJson(consulta);
+
+        ConsultaUtils consultaUtils = new ConsultaUtils();
+        Consulta objConsulta = consultaUtils.requestCadastrarConsultaComMedicoDefinido(bodyConsulta);
+        String bodyConsulta2 = gson.toJson(objConsulta);
+
+        LoginUtils loginUtils = new LoginUtils();
+        String token = loginUtils.requestLoginGetToken();
+
+        Response responseConsulta = (Response) 
+            given()
+                .header("Authorization","Bearer " + token)
+                .body(bodyConsulta2)
+                .contentType(ContentType.JSON)
+            .when()
+                .post("/consultas")
+            .then()
+                .log().all()
+                .assertThat()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .extract()
+                .response();
+
+
+            String response400 = responseConsulta.getBody().asString();
+
+            assertEquals("Médico já possui outra consulta agendada nesse mesmo horário", response400);
+
+    }
 
 }

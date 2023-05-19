@@ -19,7 +19,7 @@ public class Consulta {
 
     public Consulta criarConsultaEspecialidadeDefinida(String idPaciente) {
 
-        LocalDateTime dataEHora = LocalDateTime.now().plusHours(1);
+        LocalDateTime dataEHora = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.TUESDAY)).atTime(15, 0);
 
         this.idPaciente = idPaciente;
         this.especialidade = EspecialidadeMedico.DERMATOLOGIA.toString();
@@ -31,7 +31,7 @@ public class Consulta {
 
     public Consulta criarConsultaMedicoDefinido(String idPaciente, String idMedico) {
 
-        LocalDateTime dataEHora = LocalDateTime.now().plusHours(1);
+        LocalDateTime dataEHora = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.THURSDAY)).atTime(15, 0);
 
         this.idPaciente = idPaciente;
         this.idMedico = idMedico;

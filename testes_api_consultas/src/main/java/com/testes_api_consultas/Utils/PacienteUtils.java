@@ -10,7 +10,7 @@ import com.testes_api_consultas.Models.Paciente;
 
 public class PacienteUtils {
 
-    public Paciente cadastrarPaciente(String bodyPaciente) {
+    public Paciente requestCadastrarPaciente(String bodyPaciente) {
 
         LoginUtils loginUtils = new LoginUtils();
         String token = loginUtils.requestLoginGetToken();
@@ -35,7 +35,7 @@ public class PacienteUtils {
 
     }
 
-    public Paciente obterPacientePorId(String id) {
+    public Paciente requestObterPacientePorId(String id) {
         
         LoginUtils loginUtils = new LoginUtils();
         String token = loginUtils.requestLoginGetToken();

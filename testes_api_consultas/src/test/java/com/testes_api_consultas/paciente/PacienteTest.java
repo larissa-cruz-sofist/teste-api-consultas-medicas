@@ -57,7 +57,7 @@ public class PacienteTest extends BaseTest {
         String bodyPaciente = gson.toJson(paciente);
 
         PacienteUtils pacienteUtils = new PacienteUtils();
-        Paciente objPacienteResponse = pacienteUtils.cadastrarPaciente(bodyPaciente);    
+        Paciente objPacienteResponse = pacienteUtils.requestCadastrarPaciente(bodyPaciente);    
 
         Paciente objBodyPacientePut = new Paciente();
         objBodyPacientePut.id = objPacienteResponse.id;
@@ -94,7 +94,7 @@ public class PacienteTest extends BaseTest {
         String bodyPaciente = gson.toJson(paciente);
 
         PacienteUtils pacienteUtils = new PacienteUtils();
-        Paciente objPacienteResponse = pacienteUtils.cadastrarPaciente(bodyPaciente);
+        Paciente objPacienteResponse = pacienteUtils.requestCadastrarPaciente(bodyPaciente);
 
         Paciente objBodyPacientePut = new Paciente();
         Endereco endereco = new Endereco();
@@ -135,7 +135,7 @@ public class PacienteTest extends BaseTest {
         String bodyPaciente = gson.toJson(paciente);
 
         PacienteUtils pacienteUtils = new PacienteUtils();
-        Paciente pacienteCadastrado = pacienteUtils.cadastrarPaciente(bodyPaciente);
+        Paciente pacienteCadastrado = pacienteUtils.requestCadastrarPaciente(bodyPaciente);
 
         LoginUtils loginUtils = new LoginUtils();
         String token = loginUtils.requestLoginGetToken();
@@ -149,7 +149,7 @@ public class PacienteTest extends BaseTest {
             .assertThat()
             .statusCode(HttpStatus.SC_NO_CONTENT);
 
-        Paciente pacienteCancelado = pacienteUtils.obterPacientePorId(pacienteCadastrado.id);
+        Paciente pacienteCancelado = pacienteUtils.requestObterPacientePorId(pacienteCadastrado.id);
         assertFalse(pacienteCancelado.ativo);
 
     }
