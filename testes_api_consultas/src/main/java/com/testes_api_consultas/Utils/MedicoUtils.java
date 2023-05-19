@@ -57,5 +57,23 @@ public class MedicoUtils {
         return medico;
 
     }
+
+    public String excluirMedicoPorId(String idMedico) {
+
+        LoginUtils loginUtils = new LoginUtils();
+        String token = loginUtils.requestLoginGetToken();
+
+        given()
+            .header("Authorization", "Bearer " + token)
+        .when()
+            .delete("/medicos/" + idMedico)
+        .then()
+            .log().all()
+            .assertThat()
+            .statusCode(HttpStatus.SC_NO_CONTENT);
+
+        return idMedico;
+
+    }
     
 }
