@@ -58,7 +58,7 @@ public class MedicoTest extends BaseTest {
         String bodyMedico = gson.toJson(medico);
 
         MedicoUtils medicoUtils = new MedicoUtils();
-        Medico objMedicoResponse = medicoUtils.cadastrarMedico(bodyMedico);
+        Medico objMedicoResponse = medicoUtils.requestCadastrarMedico(bodyMedico);
       
         Medico objBodyMedicoPut = new Medico();
         objBodyMedicoPut.id = objMedicoResponse.id;
@@ -95,7 +95,7 @@ public class MedicoTest extends BaseTest {
         String bodyMedico = gson.toJson(medico);
 
         MedicoUtils medicoUtils = new MedicoUtils();
-        Medico objMedicoResponse = medicoUtils.cadastrarMedico(bodyMedico);
+        Medico objMedicoResponse = medicoUtils.requestCadastrarMedico(bodyMedico);
 
         Medico objBodyMedicoPut = new Medico();
         Endereco endereco = new Endereco();
@@ -136,7 +136,7 @@ public class MedicoTest extends BaseTest {
         String bodyMedico = gson.toJson(medico);
 
         MedicoUtils medicoUtils = new MedicoUtils();
-        Medico medicoCadastrado = medicoUtils.cadastrarMedico(bodyMedico);
+        Medico medicoCadastrado = medicoUtils.requestCadastrarMedico(bodyMedico);
 
         LoginUtils loginUtils = new LoginUtils();
         String token = loginUtils.requestLoginGetToken();
@@ -150,7 +150,7 @@ public class MedicoTest extends BaseTest {
             .assertThat()
             .statusCode(HttpStatus.SC_NO_CONTENT);
 
-        Medico medicoCancelado = medicoUtils.obterMedicoPorId(medicoCadastrado.id);
+        Medico medicoCancelado = medicoUtils.requestObterMedicoPorId(medicoCadastrado.id);
         assertFalse(medicoCancelado.ativo);
     }
 

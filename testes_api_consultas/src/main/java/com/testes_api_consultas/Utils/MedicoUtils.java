@@ -10,7 +10,7 @@ import com.testes_api_consultas.Models.Medico;
 
 public class MedicoUtils {
 
-    public Medico cadastrarMedico(String bodyMedico) {
+    public Medico requestCadastrarMedico(String bodyMedico) {
 
             LoginUtils loginUtils = new LoginUtils();
             String token = loginUtils.requestLoginGetToken();
@@ -35,7 +35,7 @@ public class MedicoUtils {
 
     }
 
-    public Medico obterMedicoPorId(String id) {
+    public Medico requestObterMedicoPorId(String id) {
         
         LoginUtils loginUtils = new LoginUtils();
         String token = loginUtils.requestLoginGetToken();
@@ -58,7 +58,7 @@ public class MedicoUtils {
 
     }
 
-    public String excluirMedicoPorId(String idMedico) {
+    public void requestExcluirMedicoPorId(String idMedico) {
 
         LoginUtils loginUtils = new LoginUtils();
         String token = loginUtils.requestLoginGetToken();
@@ -71,8 +71,6 @@ public class MedicoUtils {
             .log().all()
             .assertThat()
             .statusCode(HttpStatus.SC_NO_CONTENT);
-
-        return idMedico;
 
     }
     
