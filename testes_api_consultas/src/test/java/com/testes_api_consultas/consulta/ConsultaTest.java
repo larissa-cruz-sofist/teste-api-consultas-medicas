@@ -177,7 +177,46 @@ public class ConsultaTest extends BaseTest {
         PacienteUtils pacienteUtils = new PacienteUtils();
         Paciente objPacienteResponse = pacienteUtils.cadastrarPaciente(bodyPaciente);
 
-        Consulta consulta = new Consulta().criarAntesDaAberturaDaClinica(objPacienteResponse.id);
+        Consulta consulta = new Consulta().criarConsultaAntesDaAberturaDaClinica(objPacienteResponse.id);
+        String bodyConsulta = gson.toJson(consulta);
+
+        LoginUtils loginUtils = new LoginUtils();
+        String token = loginUtils.requestLoginGetToken();
+
+        Response responseConsulta = (Response) 
+
+            given()
+                .header("Authorization","Bearer " + token)
+                .body(bodyConsulta)
+                .contentType(ContentType.JSON)
+            .when()
+                .post("/consultas")
+            .then()
+                .log().all()
+                .assertThat()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .extract()
+                .body();
+
+            
+            String response400 = responseConsulta.getBody().asString();
+
+            assertEquals("Consulta fora do horário de funcionamento da clínica", response400);
+
+    }
+
+    @Test
+    @DisplayName("Teste Agendar Consulta Depois Do Encerramento")
+    public void testAgendarConsultaDepoisDoEncerramentoComStatus400() {
+
+        Paciente paciente = new Paciente().criarPaciente();
+        Gson gson = new GsonBuilder().create();
+        String bodyPaciente = gson.toJson(paciente);
+
+        PacienteUtils pacienteUtils = new PacienteUtils();
+        Paciente objPacienteResponse = pacienteUtils.cadastrarPaciente(bodyPaciente);
+
+        Consulta consulta = new Consulta().criarConsultaDepoisDoEncerramentoDaClinica(objPacienteResponse.id);
         String bodyConsulta = gson.toJson(consulta);
 
         LoginUtils loginUtils = new LoginUtils();
