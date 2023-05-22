@@ -22,7 +22,7 @@ public class Consulta {
         LocalDateTime dataEHora = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.TUESDAY)).atTime(15, 0);
 
         this.idPaciente = idPaciente;
-        this.especialidade = EspecialidadeMedico.DERMATOLOGIA.toString();
+        this.especialidade = EspecialidadeMedico.CARDIOLOGIA.toString();
         this.data = dataEHora.toString();
 
         return this;
