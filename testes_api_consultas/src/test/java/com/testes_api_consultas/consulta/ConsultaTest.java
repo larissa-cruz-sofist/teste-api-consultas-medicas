@@ -114,9 +114,10 @@ public class ConsultaTest extends BaseTest {
                 Arguments.of(18, 59, DayOfWeek.THURSDAY));
     }
 
-    @Test
+    @ParameterizedTest
+    @MethodSource("especialidadesValidasConsultas")
     @DisplayName("Teste Agendar Consulta com Menos de Trinta Minutos de Antecedencia")
-    public void testAgendarConsultaComMenosTrintaMinComStatus400() {
+    public void testAgendarConsultaComMenosTrintaMinComStatus400(EspecialidadeMedico especialidadeMedico) {
 
         Paciente paciente = new Paciente().criarPaciente();
         Gson gson = new GsonBuilder().create();
@@ -125,7 +126,7 @@ public class ConsultaTest extends BaseTest {
         PacienteUtils pacienteUtils = new PacienteUtils();
         Paciente objPacienteResponse = pacienteUtils.requestCadastrarPaciente(bodyPaciente);
 
-        Consulta consulta = new Consulta().criarConsultaComMenosdeTrintaMinAntecedencia(objPacienteResponse.id);
+        Consulta consulta = new Consulta().criarConsultaComMenosdeTrintaMinAntecedencia(objPacienteResponse.id, especialidadeMedico);
         String bodyConsulta = gson.toJson(consulta);
 
         LoginUtils loginUtils = new LoginUtils();
@@ -150,6 +151,14 @@ public class ConsultaTest extends BaseTest {
 
         assertEquals("Consulta deve ser agendada com antecedência mínima de 30 minutos", response400);
 
+    }
+
+    private static Stream<Arguments> especialidadesValidasConsultas() {
+        return Stream.of(
+                Arguments.of(EspecialidadeMedico.CARDIOLOGIA),
+                Arguments.of(EspecialidadeMedico.DERMATOLOGIA),
+                Arguments.of(EspecialidadeMedico.GINECOLOGIA),
+                Arguments.of(EspecialidadeMedico.ORTOPEDIA));
     }
 
     @Test

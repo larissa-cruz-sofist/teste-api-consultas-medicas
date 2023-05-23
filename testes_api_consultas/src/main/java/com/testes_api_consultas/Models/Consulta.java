@@ -66,12 +66,12 @@ public class Consulta {
 
     }
 
-    public Consulta criarConsultaComMenosdeTrintaMinAntecedencia(String idPaciente) {
+    public Consulta criarConsultaComMenosdeTrintaMinAntecedencia(String idPaciente, EspecialidadeMedico especialidadeMedico) {
 
         LocalDateTime dataEHora = LocalDateTime.now().plusMinutes(20);
 
         this.idPaciente = idPaciente;
-        this.especialidade = EspecialidadeMedico.DERMATOLOGIA.toString();
+        this.especialidade = especialidadeMedico.toString();
         this.data = dataEHora.toString();
 
         return this;
