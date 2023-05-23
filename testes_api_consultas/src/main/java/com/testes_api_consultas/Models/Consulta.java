@@ -53,6 +53,19 @@ public class Consulta {
 
     }
 
+    public Consulta criarConsultaMedicoDefinido01(String idPaciente, String idMedico, int hora, int minuto, DayOfWeek dia) {
+
+        LocalDateTime dataEHora = LocalDate.now().with(TemporalAdjusters.next(dia)).atTime(hora, minuto);
+
+        this.idPaciente = idPaciente;
+        this.idMedico = idMedico;
+        this.data = dataEHora.toString();
+
+        return this;
+
+
+    }
+
     public Consulta criarConsultaComMenosdeTrintaMinAntecedencia(String idPaciente) {
 
         LocalDateTime dataEHora = LocalDateTime.now().plusMinutes(20);
