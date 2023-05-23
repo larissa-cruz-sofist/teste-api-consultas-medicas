@@ -17,18 +17,7 @@ public class Consulta {
 
     }
 
-    public Consulta criarConsultaEspecialidadeDefinida(String idPaciente) {
-
-        LocalDateTime dataEHora = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.TUESDAY)).atTime(15, 0);
-
-        this.idPaciente = idPaciente;
-        this.especialidade = EspecialidadeMedico.CARDIOLOGIA.toString();
-        this.data = dataEHora.toString();
-
-        return this;
-    }
-
-    public Consulta criarConsultaEspecialidadeDefinida01(String idPaciente, int hora, int minuto, DayOfWeek dia, EspecialidadeMedico especialidadeMedico) {
+    public Consulta criarConsultaEspecialidadeDefinida(String idPaciente, int hora, int minuto, DayOfWeek dia, EspecialidadeMedico especialidadeMedico) {
 
         LocalDateTime dataEHora = LocalDate.now().with(TemporalAdjusters.next(dia)).atTime(hora, minuto);
 
@@ -53,7 +42,7 @@ public class Consulta {
 
     }
 
-    public Consulta criarConsultaMedicoDefinido01(String idPaciente, String idMedico, int hora, int minuto, DayOfWeek dia) {
+    public Consulta criarConsultaMedicoDefinidoComDataHoraDia(String idPaciente, String idMedico, int hora, int minuto, DayOfWeek dia) {
 
         LocalDateTime dataEHora = LocalDate.now().with(TemporalAdjusters.next(dia)).atTime(hora, minuto);
 
@@ -88,9 +77,9 @@ public class Consulta {
         return this;
     }
 
-    public Consulta criarConsultaAntesDaAberturaDaClinica(String idPaciente) {
+    public Consulta criarConsultaAntesDaAberturaDaClinica(String idPaciente, int hora, int minuto, DayOfWeek dia) {
 
-        LocalDateTime dataEHora = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(06, 55);
+        LocalDateTime dataEHora = LocalDate.now().with(TemporalAdjusters.next(dia)).atTime(hora, minuto);
 
         this.idPaciente = idPaciente;
         this.especialidade = EspecialidadeMedico.DERMATOLOGIA.toString();
@@ -99,9 +88,9 @@ public class Consulta {
         return this;
     }
 
-    public Consulta criarConsultaDepoisDoEncerramentoDaClinica(String idPaciente) {
+    public Consulta criarConsultaDepoisDoEncerramentoDaClinica(String idPaciente, int hora, int minuto, DayOfWeek dia) {
 
-        LocalDateTime dataEHora = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(19, 0);
+        LocalDateTime dataEHora = LocalDate.now().with(TemporalAdjusters.next(dia)).atTime(hora, minuto);
 
         this.idPaciente = idPaciente;
         this.especialidade = EspecialidadeMedico.DERMATOLOGIA.toString();

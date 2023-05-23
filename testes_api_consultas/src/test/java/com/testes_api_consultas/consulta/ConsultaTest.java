@@ -42,7 +42,7 @@ public class ConsultaTest extends BaseTest {
         PacienteUtils pacienteUtils = new PacienteUtils();
         Paciente objPacienteResponse = pacienteUtils.requestCadastrarPaciente(bodyPaciente);
 
-        Consulta consulta = new Consulta().criarConsultaEspecialidadeDefinida01(objPacienteResponse.id, hora, minuto, dia, especialidadeMedico);
+        Consulta consulta = new Consulta().criarConsultaEspecialidadeDefinida(objPacienteResponse.id, hora, minuto, dia, especialidadeMedico);
         String bodyConsulta = gson.toJson(consulta);
 
         LoginUtils loginUtils = new LoginUtils();
@@ -88,7 +88,7 @@ public class ConsultaTest extends BaseTest {
         MedicoUtils medicoUtils = new MedicoUtils();
         Medico objMedicoResponse = medicoUtils.requestCadastrarMedico(bodyMedico);
 
-        Consulta consulta = new Consulta().criarConsultaMedicoDefinido01(objPacienteResponse.id, objMedicoResponse.id, hora, minuto, dia);
+        Consulta consulta = new Consulta().criarConsultaMedicoDefinidoComDataHoraDia(objPacienteResponse.id, objMedicoResponse.id, hora, minuto, dia);
         String bodyConsulta = gson.toJson(consulta);
 
         LoginUtils loginUtils = new LoginUtils();
@@ -193,9 +193,10 @@ public class ConsultaTest extends BaseTest {
 
     }
 
-    @Test
     @DisplayName("Teste Agendar Consulta Antes Da Abertura")
-    public void testAgendarConsultaAntesDaAberturaComStatus400() {
+    @ParameterizedTest
+    @MethodSource("horariosDatasConsultasAntesAbertura")
+    public void testAgendarConsultaAntesDaAberturaComStatus400(int hora, int minuto, DayOfWeek dia) {
 
         Paciente paciente = new Paciente().criarPaciente();
         Gson gson = new GsonBuilder().create();
@@ -204,7 +205,7 @@ public class ConsultaTest extends BaseTest {
         PacienteUtils pacienteUtils = new PacienteUtils();
         Paciente objPacienteResponse = pacienteUtils.requestCadastrarPaciente(bodyPaciente);
 
-        Consulta consulta = new Consulta().criarConsultaAntesDaAberturaDaClinica(objPacienteResponse.id);
+        Consulta consulta = new Consulta().criarConsultaAntesDaAberturaDaClinica(objPacienteResponse.id, hora, minuto, dia);
         String bodyConsulta = gson.toJson(consulta);
 
         LoginUtils loginUtils = new LoginUtils();
@@ -231,9 +232,21 @@ public class ConsultaTest extends BaseTest {
 
     }
 
-    @Test
+    private static Stream<Arguments> horariosDatasConsultasAntesAbertura() {
+        return Stream.of(
+                Arguments.of(6, 59, DayOfWeek.MONDAY),
+                Arguments.of(5, 0, DayOfWeek.TUESDAY),
+                Arguments.of( 6, 58, DayOfWeek.WEDNESDAY),
+                Arguments.of(6, 30, DayOfWeek.THURSDAY),
+                Arguments.of(4, 0, DayOfWeek.FRIDAY),
+                Arguments.of(6, 59, DayOfWeek.SATURDAY),
+                Arguments.of(10, 0, DayOfWeek.SUNDAY));
+    }
+
     @DisplayName("Teste Agendar Consulta Depois Do Encerramento")
-    public void testAgendarConsultaDepoisDoEncerramentoComStatus400() {
+    @ParameterizedTest
+    @MethodSource("horariosDatasConsultasDepoisEncerramento")
+    public void testAgendarConsultaDepoisDoEncerramentoComStatus400(int hora, int minuto, DayOfWeek dia) {
 
         Paciente paciente = new Paciente().criarPaciente();
         Gson gson = new GsonBuilder().create();
@@ -242,7 +255,7 @@ public class ConsultaTest extends BaseTest {
         PacienteUtils pacienteUtils = new PacienteUtils();
         Paciente objPacienteResponse = pacienteUtils.requestCadastrarPaciente(bodyPaciente);
 
-        Consulta consulta = new Consulta().criarConsultaDepoisDoEncerramentoDaClinica(objPacienteResponse.id);
+        Consulta consulta = new Consulta().criarConsultaDepoisDoEncerramentoDaClinica(objPacienteResponse.id, hora, minuto, dia);
         String bodyConsulta = gson.toJson(consulta);
 
         LoginUtils loginUtils = new LoginUtils();
@@ -267,6 +280,17 @@ public class ConsultaTest extends BaseTest {
 
         assertEquals("Consulta fora do horário de funcionamento da clínica", response400);
 
+    }
+
+    private static Stream<Arguments> horariosDatasConsultasDepoisEncerramento() {
+        return Stream.of(
+                Arguments.of(19, 0, DayOfWeek.MONDAY),
+                Arguments.of(19, 1, DayOfWeek.TUESDAY),
+                Arguments.of( 20, 0, DayOfWeek.WEDNESDAY),
+                Arguments.of(21, 0, DayOfWeek.THURSDAY),
+                Arguments.of(3, 0, DayOfWeek.FRIDAY),
+                Arguments.of(19, 0, DayOfWeek.SATURDAY),
+                Arguments.of(19, 30, DayOfWeek.SUNDAY));
     }
 
     @Test
