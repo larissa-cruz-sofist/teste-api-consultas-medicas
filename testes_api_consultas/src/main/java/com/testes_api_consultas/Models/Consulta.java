@@ -77,12 +77,12 @@ public class Consulta {
         return this;
     }
 
-    public Consulta criarConsultaNoDomingo(String idPaciente) {
+    public Consulta criarConsultaNoDomingo(String idPaciente, int hora, int minuto, EspecialidadeMedico especialidadeMedico) {
 
-        LocalDateTime dataEHora = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.SUNDAY)).atTime(10, 0);
+        LocalDateTime dataEHora = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.SUNDAY)).atTime(hora, minuto);
 
         this.idPaciente = idPaciente;
-        this.especialidade = EspecialidadeMedico.DERMATOLOGIA.toString();
+        this.especialidade = especialidadeMedico.toString();
         this.data = dataEHora.toString();
 
         return this;

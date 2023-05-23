@@ -32,7 +32,7 @@ public class ConsultaTest extends BaseTest {
 
     @DisplayName("Teste Agendar Consulta com Especialidade Definida")
     @ParameterizedTest
-    @MethodSource("datasValidasConsultasEspecialidade")
+    @MethodSource("horariosDatasEspecialidadesConsultas")
     public void testAgendarConsultaComEspecialidadeComStatus200(int hora, int minuto, DayOfWeek dia, EspecialidadeMedico especialidadeMedico) {
 
         Paciente paciente = new Paciente().criarPaciente();
@@ -61,7 +61,7 @@ public class ConsultaTest extends BaseTest {
 
     }
 
-    private static Stream<Arguments> datasValidasConsultasEspecialidade() {
+    private static Stream<Arguments> horariosDatasEspecialidadesConsultas() {
         return Stream.of(
                 Arguments.of(7, 0, DayOfWeek.MONDAY, EspecialidadeMedico.CARDIOLOGIA),
                 Arguments.of(7, 1, DayOfWeek.TUESDAY, EspecialidadeMedico.DERMATOLOGIA),
@@ -71,7 +71,7 @@ public class ConsultaTest extends BaseTest {
 
     @DisplayName("Teste Agendar Consulta com Medico Definido")
     @ParameterizedTest
-    @MethodSource("horariosDatasValidosConsultas")
+    @MethodSource("horariosDatasConsultas")
     public void testAgendarConsultaComMedicoDefinidoComStatus200(int hora, int minuto, DayOfWeek dia) {
 
         Paciente paciente = new Paciente().criarPaciente();
@@ -106,7 +106,7 @@ public class ConsultaTest extends BaseTest {
 
     }
 
-    private static Stream<Arguments> horariosDatasValidosConsultas() {
+    private static Stream<Arguments> horariosDatasConsultas() {
         return Stream.of(
                 Arguments.of(7, 0, DayOfWeek.FRIDAY),
                 Arguments.of(7, 1, DayOfWeek.MONDAY),
@@ -115,7 +115,7 @@ public class ConsultaTest extends BaseTest {
     }
 
     @ParameterizedTest
-    @MethodSource("especialidadesValidasConsultas")
+    @MethodSource("especialidadesConsultas")
     @DisplayName("Teste Agendar Consulta com Menos de Trinta Minutos de Antecedencia")
     public void testAgendarConsultaComMenosTrintaMinComStatus400(EspecialidadeMedico especialidadeMedico) {
 
@@ -153,7 +153,7 @@ public class ConsultaTest extends BaseTest {
 
     }
 
-    private static Stream<Arguments> especialidadesValidasConsultas() {
+    private static Stream<Arguments> especialidadesConsultas() {
         return Stream.of(
                 Arguments.of(EspecialidadeMedico.CARDIOLOGIA),
                 Arguments.of(EspecialidadeMedico.DERMATOLOGIA),
@@ -161,9 +161,10 @@ public class ConsultaTest extends BaseTest {
                 Arguments.of(EspecialidadeMedico.ORTOPEDIA));
     }
 
-    @Test
+    @ParameterizedTest
+    @MethodSource("horariosEspecialidadesConsultas")
     @DisplayName("Teste Agendar Consulta No Domingo")
-    public void testAgendarConsultaNoDomingoComStatus400() {
+    public void testAgendarConsultaNoDomingoComStatus400(int hora, int minuto, EspecialidadeMedico especialidadeMedico) {
 
         Paciente paciente = new Paciente().criarPaciente();
         Gson gson = new GsonBuilder().create();
@@ -172,7 +173,7 @@ public class ConsultaTest extends BaseTest {
         PacienteUtils pacienteUtils = new PacienteUtils();
         Paciente objPacienteResponse = pacienteUtils.requestCadastrarPaciente(bodyPaciente);
 
-        Consulta consulta = new Consulta().criarConsultaNoDomingo(objPacienteResponse.id);
+        Consulta consulta = new Consulta().criarConsultaNoDomingo(objPacienteResponse.id, hora, minuto, especialidadeMedico);
         String bodyConsulta = gson.toJson(consulta);
 
         LoginUtils loginUtils = new LoginUtils();
@@ -197,6 +198,14 @@ public class ConsultaTest extends BaseTest {
 
         assertEquals("Consulta fora do horário de funcionamento da clínica", response400);
 
+    }
+
+    private static Stream<Arguments> horariosEspecialidadesConsultas() {
+        return Stream.of(
+                Arguments.of(7, 0, EspecialidadeMedico.CARDIOLOGIA),
+                Arguments.of(7, 1, EspecialidadeMedico.DERMATOLOGIA),
+                Arguments.of(18, 58, EspecialidadeMedico.GINECOLOGIA),
+                Arguments.of(18, 59, EspecialidadeMedico.ORTOPEDIA));
     }
 
     @Test
