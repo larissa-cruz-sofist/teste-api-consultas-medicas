@@ -2,12 +2,16 @@ package com.testes_api_consultas.consulta;
 
 import static io.restassured.RestAssured.*;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.DisplayName;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.testes_api_consultas.Models.Consulta;
+import com.testes_api_consultas.Models.EspecialidadeMedico;
 import com.testes_api_consultas.Models.Medico;
 import com.testes_api_consultas.Models.Paciente;
 import com.testes_api_consultas.Utils.ConsultaUtils;
@@ -18,14 +22,18 @@ import com.testes_api_consultas.baseTest.BaseTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.DayOfWeek;
+import java.util.stream.Stream;
+
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
 public class ConsultaTest extends BaseTest {
 
-    @Test
     @DisplayName("Teste Agendar Consulta com Especialidade Definida")
-    public void testAgendarConsultaComEspecialidadeComStatus200() {
+    @ParameterizedTest
+    @MethodSource("datasValidasConsultas")
+    public void testAgendarConsultaComEspecialidadeComStatus200(int hora, int minuto, DayOfWeek dia, EspecialidadeMedico especialidadeMedico) {
 
         Paciente paciente = new Paciente().criarPaciente();
         Gson gson = new GsonBuilder().create();
@@ -34,28 +42,37 @@ public class ConsultaTest extends BaseTest {
         PacienteUtils pacienteUtils = new PacienteUtils();
         Paciente objPacienteResponse = pacienteUtils.requestCadastrarPaciente(bodyPaciente);
 
-        Consulta consulta = new Consulta().criarConsultaEspecialidadeDefinida(objPacienteResponse.id);
+        Consulta consulta = new Consulta().criarConsultaEspecialidadeDefinida01(objPacienteResponse.id, hora, minuto, dia, especialidadeMedico);
         String bodyConsulta = gson.toJson(consulta);
 
         LoginUtils loginUtils = new LoginUtils();
         String token = loginUtils.requestLoginGetToken();
 
         given()
-                .header("Authorization","Bearer " + token)
+                .header("Authorization", "Bearer " + token)
                 .body(bodyConsulta)
                 .contentType(ContentType.JSON)
-            .when()
+                .when()
                 .post("/consultas")
-            .then()
+                .then()
                 .log().all()
                 .assertThat()
                 .statusCode(HttpStatus.SC_OK);
 
     }
 
-    @Test
+    private static Stream<Arguments> datasValidasConsultas() {
+        return Stream.of(
+                Arguments.of(7, 0, DayOfWeek.MONDAY, EspecialidadeMedico.CARDIOLOGIA),
+                Arguments.of(7, 1, DayOfWeek.TUESDAY, EspecialidadeMedico.DERMATOLOGIA),
+                Arguments.of(18, 58, DayOfWeek.WEDNESDAY, EspecialidadeMedico.GINECOLOGIA),
+                Arguments.of(18, 59, DayOfWeek.THURSDAY, EspecialidadeMedico.ORTOPEDIA));
+    }
+
     @DisplayName("Teste Agendar Consulta com Medico Definido")
-    public void testAgendarConsultaComMedicoDefinidoComStatus200() {
+    @ParameterizedTest
+    @MethodSource("horariosValidosConsultas")
+    public void testAgendarConsultaComMedicoDefinidoComStatus200(int hora, int minuto) {
 
         Paciente paciente = new Paciente().criarPaciente();
         Gson gson = new GsonBuilder().create();
@@ -77,16 +94,24 @@ public class ConsultaTest extends BaseTest {
         String token = loginUtils.requestLoginGetToken();
 
         given()
-                .header("Authorization","Bearer " + token)
+                .header("Authorization", "Bearer " + token)
                 .body(bodyConsulta)
                 .contentType(ContentType.JSON)
-            .when()
+                .when()
                 .post("/consultas")
-            .then()
+                .then()
                 .log().all()
                 .assertThat()
                 .statusCode(HttpStatus.SC_OK);
 
+    }
+
+    private static Stream<Arguments> horariosValidosConsultas() {
+        return Stream.of(
+                Arguments.of(7, 0),
+                Arguments.of(7, 1),
+                Arguments.of(18, 58),
+                Arguments.of(18, 59));
     }
 
     @Test
@@ -106,25 +131,24 @@ public class ConsultaTest extends BaseTest {
         LoginUtils loginUtils = new LoginUtils();
         String token = loginUtils.requestLoginGetToken();
 
-        Response responseConsulta = (Response) 
+        Response responseConsulta = (Response)
 
-            given()
-                .header("Authorization","Bearer " + token)
+        given()
+                .header("Authorization", "Bearer " + token)
                 .body(bodyConsulta)
                 .contentType(ContentType.JSON)
-            .when()
+                .when()
                 .post("/consultas")
-            .then()
+                .then()
                 .log().all()
                 .assertThat()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .extract()
                 .response();
 
-            
-            String response400 = responseConsulta.getBody().asString();
+        String response400 = responseConsulta.getBody().asString();
 
-            assertEquals("Consulta deve ser agendada com antecedência mínima de 30 minutos", response400);
+        assertEquals("Consulta deve ser agendada com antecedência mínima de 30 minutos", response400);
 
     }
 
@@ -145,25 +169,24 @@ public class ConsultaTest extends BaseTest {
         LoginUtils loginUtils = new LoginUtils();
         String token = loginUtils.requestLoginGetToken();
 
-        Response responseConsulta = (Response) 
+        Response responseConsulta = (Response)
 
-            given()
-                .header("Authorization","Bearer " + token)
+        given()
+                .header("Authorization", "Bearer " + token)
                 .body(bodyConsulta)
                 .contentType(ContentType.JSON)
-            .when()
+                .when()
                 .post("/consultas")
-            .then()
+                .then()
                 .log().all()
                 .assertThat()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .extract()
                 .response();
 
-            
-            String response400 = responseConsulta.getBody().asString();
+        String response400 = responseConsulta.getBody().asString();
 
-            assertEquals("Consulta fora do horário de funcionamento da clínica", response400);
+        assertEquals("Consulta fora do horário de funcionamento da clínica", response400);
 
     }
 
@@ -184,25 +207,24 @@ public class ConsultaTest extends BaseTest {
         LoginUtils loginUtils = new LoginUtils();
         String token = loginUtils.requestLoginGetToken();
 
-        Response responseConsulta = (Response) 
+        Response responseConsulta = (Response)
 
-            given()
-                .header("Authorization","Bearer " + token)
+        given()
+                .header("Authorization", "Bearer " + token)
                 .body(bodyConsulta)
                 .contentType(ContentType.JSON)
-            .when()
+                .when()
                 .post("/consultas")
-            .then()
+                .then()
                 .log().all()
                 .assertThat()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .extract()
                 .response();
 
-            
-            String response400 = responseConsulta.getBody().asString();
+        String response400 = responseConsulta.getBody().asString();
 
-            assertEquals("Consulta fora do horário de funcionamento da clínica", response400);
+        assertEquals("Consulta fora do horário de funcionamento da clínica", response400);
 
     }
 
@@ -223,25 +245,24 @@ public class ConsultaTest extends BaseTest {
         LoginUtils loginUtils = new LoginUtils();
         String token = loginUtils.requestLoginGetToken();
 
-        Response responseConsulta = (Response) 
+        Response responseConsulta = (Response)
 
-            given()
-                .header("Authorization","Bearer " + token)
+        given()
+                .header("Authorization", "Bearer " + token)
                 .body(bodyConsulta)
                 .contentType(ContentType.JSON)
-            .when()
+                .when()
                 .post("/consultas")
-            .then()
+                .then()
                 .log().all()
                 .assertThat()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .extract()
                 .response();
 
-            
-            String response400 = responseConsulta.getBody().asString();
+        String response400 = responseConsulta.getBody().asString();
 
-            assertEquals("Consulta fora do horário de funcionamento da clínica", response400);
+        assertEquals("Consulta fora do horário de funcionamento da clínica", response400);
 
     }
 
@@ -270,24 +291,22 @@ public class ConsultaTest extends BaseTest {
         LoginUtils loginUtils = new LoginUtils();
         String token = loginUtils.requestLoginGetToken();
 
-        Response responseConsulta = (Response) 
-            given()
-                .header("Authorization","Bearer " + token)
+        Response responseConsulta = (Response) given()
+                .header("Authorization", "Bearer " + token)
                 .body(bodyConsulta)
                 .contentType(ContentType.JSON)
-            .when()
+                .when()
                 .post("/consultas")
-            .then()
+                .then()
                 .log().all()
                 .assertThat()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .extract()
                 .response();
 
+        String response400 = responseConsulta.getBody().asString();
 
-            String response400 = responseConsulta.getBody().asString();
-
-            assertEquals("Consulta não pode ser agendada com médico excluído", response400);
+        assertEquals("Consulta não pode ser agendada com médico excluído", response400);
 
     }
 
@@ -318,24 +337,22 @@ public class ConsultaTest extends BaseTest {
         LoginUtils loginUtils = new LoginUtils();
         String token = loginUtils.requestLoginGetToken();
 
-        Response responseConsulta = (Response) 
-            given()
-                .header("Authorization","Bearer " + token)
+        Response responseConsulta = (Response) given()
+                .header("Authorization", "Bearer " + token)
                 .body(bodyConsulta2)
                 .contentType(ContentType.JSON)
-            .when()
+                .when()
                 .post("/consultas")
-            .then()
+                .then()
                 .log().all()
                 .assertThat()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .extract()
                 .response();
 
+        String response400 = responseConsulta.getBody().asString();
 
-            String response400 = responseConsulta.getBody().asString();
-
-            assertEquals("Médico já possui outra consulta agendada nesse mesmo horário", response400);
+        assertEquals("Médico já possui outra consulta agendada nesse mesmo horário", response400);
 
     }
 
