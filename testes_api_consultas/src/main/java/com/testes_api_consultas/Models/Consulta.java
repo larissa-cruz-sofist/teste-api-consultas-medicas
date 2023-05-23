@@ -66,23 +66,23 @@ public class Consulta {
 
     }
 
-    public Consulta criarConsultaComMenosdeTrintaMinAntecedencia(String idPaciente, EspecialidadeMedico especialidadeMedico) {
+    public Consulta criarConsultaComMenosdeTrintaMinAntecedencia(String idPaciente) {
 
         LocalDateTime dataEHora = LocalDateTime.now().plusMinutes(20);
 
         this.idPaciente = idPaciente;
-        this.especialidade = especialidadeMedico.toString();
+        this.especialidade = EspecialidadeMedico.ORTOPEDIA.toString();
         this.data = dataEHora.toString();
 
         return this;
     }
 
-    public Consulta criarConsultaNoDomingo(String idPaciente, int hora, int minuto, EspecialidadeMedico especialidadeMedico) {
+    public Consulta criarConsultaNoDomingo(String idPaciente) {
 
-        LocalDateTime dataEHora = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.SUNDAY)).atTime(hora, minuto);
+        LocalDateTime dataEHora = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.SUNDAY)).atTime(10, 0);
 
         this.idPaciente = idPaciente;
-        this.especialidade = especialidadeMedico.toString();
+        this.especialidade = EspecialidadeMedico.GINECOLOGIA.toString();
         this.data = dataEHora.toString();
 
         return this;
