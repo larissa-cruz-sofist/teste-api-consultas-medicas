@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.testes_api_consultas.Models.Consulta;
+import com.testes_api_consultas.Models.EspecialidadeMedico;
 import com.testes_api_consultas.Models.Medico;
 import com.testes_api_consultas.Models.Paciente;
 import com.testes_api_consultas.Utils.ConsultaUtils;
@@ -32,7 +33,7 @@ public class ConsultaTest extends BaseTest {
     @DisplayName("Teste Agendar Consulta com Especialidade Definida")
     @ParameterizedTest
     @MethodSource("datasValidasConsultas")
-    public void testAgendarConsultaComEspecialidadeComStatus200(int hora, int minuto, DayOfWeek dia) {
+    public void testAgendarConsultaComEspecialidadeComStatus200(int hora, int minuto, DayOfWeek dia, EspecialidadeMedico especialidadeMedico) {
 
         Paciente paciente = new Paciente().criarPaciente();
         Gson gson = new GsonBuilder().create();
@@ -41,7 +42,7 @@ public class ConsultaTest extends BaseTest {
         PacienteUtils pacienteUtils = new PacienteUtils();
         Paciente objPacienteResponse = pacienteUtils.requestCadastrarPaciente(bodyPaciente);
 
-        Consulta consulta = new Consulta().criarConsultaEspecialidadeDefinida(objPacienteResponse.id);
+        Consulta consulta = new Consulta().criarConsultaEspecialidadeDefinida01(objPacienteResponse.id, hora, minuto, dia, especialidadeMedico);
         String bodyConsulta = gson.toJson(consulta);
 
         LoginUtils loginUtils = new LoginUtils();
@@ -62,15 +63,16 @@ public class ConsultaTest extends BaseTest {
 
     private static Stream<Arguments> datasValidasConsultas() {
         return Stream.of(
-                Arguments.of(7, 0, DayOfWeek.MONDAY),
-                Arguments.of(7, 1, DayOfWeek.TUESDAY),
-                Arguments.of(18, 58, DayOfWeek.WEDNESDAY),
-                Arguments.of(18, 59, DayOfWeek.THURSDAY));
+                Arguments.of(7, 0, DayOfWeek.MONDAY, EspecialidadeMedico.CARDIOLOGIA),
+                Arguments.of(7, 1, DayOfWeek.TUESDAY, EspecialidadeMedico.DERMATOLOGIA),
+                Arguments.of(18, 58, DayOfWeek.WEDNESDAY, EspecialidadeMedico.GINECOLOGIA),
+                Arguments.of(18, 59, DayOfWeek.THURSDAY, EspecialidadeMedico.ORTOPEDIA));
     }
 
-    @Test
     @DisplayName("Teste Agendar Consulta com Medico Definido")
-    public void testAgendarConsultaComMedicoDefinidoComStatus200() {
+    @ParameterizedTest
+    @MethodSource("horariosValidosConsultas")
+    public void testAgendarConsultaComMedicoDefinidoComStatus200(int hora, int minuto) {
 
         Paciente paciente = new Paciente().criarPaciente();
         Gson gson = new GsonBuilder().create();
@@ -102,6 +104,14 @@ public class ConsultaTest extends BaseTest {
                 .assertThat()
                 .statusCode(HttpStatus.SC_OK);
 
+    }
+
+    private static Stream<Arguments> horariosValidosConsultas() {
+        return Stream.of(
+                Arguments.of(7, 0),
+                Arguments.of(7, 1),
+                Arguments.of(18, 58),
+                Arguments.of(18, 59));
     }
 
     @Test

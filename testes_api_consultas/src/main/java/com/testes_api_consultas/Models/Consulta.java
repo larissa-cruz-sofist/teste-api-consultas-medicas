@@ -28,6 +28,17 @@ public class Consulta {
         return this;
     }
 
+    public Consulta criarConsultaEspecialidadeDefinida01(String idPaciente, int hora, int minuto, DayOfWeek dia, EspecialidadeMedico especialidadeMedico) {
+
+        LocalDateTime dataEHora = LocalDate.now().with(TemporalAdjusters.next(dia)).atTime(hora, minuto);
+
+        this.idPaciente = idPaciente;
+        this.especialidade = especialidadeMedico.toString();
+        this.data = dataEHora.toString();
+
+        return this;
+    }
+
 
     public Consulta criarConsultaMedicoDefinido(String idPaciente, String idMedico) {
 

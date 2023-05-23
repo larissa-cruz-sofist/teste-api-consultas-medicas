@@ -34,7 +34,7 @@ public class Medico {
         this.email = fakeValuesService.bothify("???????##@vold.med");
         this.crm =  fakeValuesService.numerify("######");
         this.telefone = faker.phoneNumber().cellPhone();
-        this.especialidade = EspecialidadeMedico.CARDIOLOGIA.toString();
+        this.especialidade = EspecialidadeMedico.GINECOLOGIA.toString();
         this.endereco = new Endereco().criarEndereco();
 
         return this;
