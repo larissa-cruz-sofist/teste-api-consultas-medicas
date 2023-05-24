@@ -383,4 +383,48 @@ public class ConsultaTest extends BaseTest {
 
     }
 
+    @Test
+    @DisplayName("Teste Agendar Consulta com Paciente Excluído")
+    public void testAgendarConsultaComPacienteExcluidoComStatus400() {
+
+        Paciente paciente = new Paciente().criarPaciente();
+        Gson gson = new GsonBuilder().create();
+        String bodyPaciente = gson.toJson(paciente);
+
+        PacienteUtils pacienteUtils = new PacienteUtils();
+        Paciente objPacienteResponse = pacienteUtils.requestCadastrarPaciente(bodyPaciente);
+
+        Medico medico = new Medico().criarMedico();
+        String bodyMedico = gson.toJson(medico);
+
+        MedicoUtils medicoUtils = new MedicoUtils();
+        Medico objMedicoResponse = medicoUtils.requestCadastrarMedico(bodyMedico);
+
+        pacienteUtils.requestExcluirPacientePorId(objPacienteResponse.id);
+
+        Consulta consulta = new Consulta().criarConsultaMedicoDefinido(objPacienteResponse.id, objMedicoResponse.id);
+        String bodyConsulta = gson.toJson(consulta);
+
+        LoginUtils loginUtils = new LoginUtils();
+        String token = loginUtils.requestLoginGetToken();
+
+        Response responseConsulta = (Response) given()
+                .header("Authorization", "Bearer " + token)
+                .body(bodyConsulta)
+                .contentType(ContentType.JSON)
+                .when()
+                .post("/consultas")
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .extract()
+                .response();
+
+        String response400 = responseConsulta.getBody().asString();
+
+        assertEquals("Consulta não pode ser agendada com paciente excluído", response400);
+
+    }
+
 }
