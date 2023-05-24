@@ -57,5 +57,21 @@ public class PacienteUtils {
         return paciente;
 
     }
+
+    public void requestExcluirPacientePorId(String idPaciente) {
+
+        LoginUtils loginUtils = new LoginUtils();
+        String token = loginUtils.requestLoginGetToken();
+
+        given()
+            .header("Authorization", "Bearer " + token)
+        .when()
+            .delete("/pacientes/" + idPaciente)
+        .then()
+            .log().all()
+            .assertThat()
+            .statusCode(HttpStatus.SC_NO_CONTENT);
+
+    }
     
 }
