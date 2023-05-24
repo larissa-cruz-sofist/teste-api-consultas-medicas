@@ -9,7 +9,7 @@ import org.apache.http.HttpStatus;
 
 public class ConsultaUtils {
 
-    public Consulta requestCadastrarConsultaComMedicoDefinido(String bodyConsulta) {
+    public Consulta requestCadastrarConsulta(String bodyConsulta) {
 
         LoginUtils loginUtils = new LoginUtils();
         String token = loginUtils.requestLoginGetToken();
