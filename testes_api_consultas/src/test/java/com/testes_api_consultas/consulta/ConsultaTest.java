@@ -358,7 +358,7 @@ public class ConsultaTest extends BaseTest {
         String bodyConsulta = gson.toJson(consulta);
 
         ConsultaUtils consultaUtils = new ConsultaUtils();
-        Consulta objConsulta = consultaUtils.requestCadastrarConsultaComMedicoDefinido(bodyConsulta);
+        Consulta objConsulta = consultaUtils.requestCadastrarConsulta(bodyConsulta);
         String bodyConsulta2 = gson.toJson(objConsulta);
 
         LoginUtils loginUtils = new LoginUtils();
@@ -424,6 +424,48 @@ public class ConsultaTest extends BaseTest {
         String response400 = responseConsulta.getBody().asString();
 
         assertEquals("Consulta não pode ser agendada com paciente excluído", response400);
+
+    }
+
+    @Test
+    @DisplayName("Teste Agendar Outra Consulta no mesmo Dia para o mesmo Paciente")
+    public void testAgendarOutraConsultaNoMesmoDiaParaMesmoPacienteComStatus400() {
+
+        Paciente paciente = new Paciente().criarPaciente();
+        Gson gson = new GsonBuilder().create();
+        String bodyPaciente = gson.toJson(paciente);
+
+        PacienteUtils pacienteUtils = new PacienteUtils();
+        Paciente objPacienteResponse = pacienteUtils.requestCadastrarPaciente(bodyPaciente);
+
+        Consulta consulta = new Consulta().criarConsultaEspecialidadeDefinida(objPacienteResponse.id, 10, 0, DayOfWeek.MONDAY, EspecialidadeMedico.CARDIOLOGIA);
+        String bodyConsulta = gson.toJson(consulta);
+
+        ConsultaUtils consultaUtils = new ConsultaUtils();
+        Consulta objConsulta = consultaUtils.requestCadastrarConsulta(bodyConsulta);
+
+        Consulta objConsultaNova = new Consulta().criarConsultaEspecialidadeDefinida(objConsulta.idPaciente, 15, 0, DayOfWeek.MONDAY, EspecialidadeMedico.DERMATOLOGIA);
+        String bodyConsultaNova = gson.toJson(objConsultaNova);
+
+        LoginUtils loginUtils = new LoginUtils();
+        String token = loginUtils.requestLoginGetToken();
+
+        Response responseConsulta = (Response) given()
+                .header("Authorization", "Bearer " + token)
+                .body(bodyConsultaNova)
+                .contentType(ContentType.JSON)
+                .when()
+                .post("/consultas")
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .extract()
+                .response();
+
+        String response400 = responseConsulta.getBody().asString();
+
+        assertEquals("Paciente já possui uma consulta agendada nesse dia", response400);
 
     }
 
