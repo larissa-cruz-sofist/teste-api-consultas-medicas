@@ -17,6 +17,7 @@ import com.testes_api_consultas.Models.Paciente;
 import com.testes_api_consultas.Utils.ConsultaUtils;
 import com.testes_api_consultas.Utils.LoginUtils;
 import com.testes_api_consultas.Utils.MedicoUtils;
+import com.testes_api_consultas.Utils.MessagesPropertiesUtils;
 import com.testes_api_consultas.Utils.PacienteUtils;
 import com.testes_api_consultas.baseTest.BaseTest;
 
@@ -29,6 +30,8 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
 public class ConsultaTest extends BaseTest {
+
+    MessagesPropertiesUtils messagesPropertiesUtils = new MessagesPropertiesUtils();
 
     @DisplayName("Teste Agendar Consulta com Especialidade Definida")
     @ParameterizedTest
@@ -150,7 +153,7 @@ public class ConsultaTest extends BaseTest {
 
         String response400 = responseConsulta.getBody().asString();
 
-        assertEquals("Consulta deve ser agendada com antecedência mínima de 30 minutos", response400);
+        assertEquals(messagesPropertiesUtils.getPropertyMessage("messegeConsultaTrintaMin"), response400);
 
     }
 
@@ -189,7 +192,7 @@ public class ConsultaTest extends BaseTest {
 
         String response400 = responseConsulta.getBody().asString();
 
-        assertEquals("Consulta fora do horário de funcionamento da clínica", response400);
+        assertEquals(messagesPropertiesUtils.getPropertyMessage("messegeConsultaForaDoHorario"), response400);
 
     }
 
@@ -228,7 +231,7 @@ public class ConsultaTest extends BaseTest {
 
         String response400 = responseConsulta.getBody().asString();
 
-        assertEquals("Consulta fora do horário de funcionamento da clínica", response400);
+        assertEquals(messagesPropertiesUtils.getPropertyMessage("messegeConsultaForaDoHorario"), response400);
 
     }
 
@@ -278,7 +281,7 @@ public class ConsultaTest extends BaseTest {
 
         String response400 = responseConsulta.getBody().asString();
 
-        assertEquals("Consulta fora do horário de funcionamento da clínica", response400);
+        assertEquals(messagesPropertiesUtils.getPropertyMessage("messegeConsultaForaDoHorario"), response400);
 
     }
 
@@ -333,7 +336,7 @@ public class ConsultaTest extends BaseTest {
 
         String response400 = responseConsulta.getBody().asString();
 
-        assertEquals("Consulta não pode ser agendada com médico excluído", response400);
+        assertEquals(messagesPropertiesUtils.getPropertyMessage("messageConsultaMedicoExcluido"), response400);
 
     }
 
@@ -379,7 +382,7 @@ public class ConsultaTest extends BaseTest {
 
         String response400 = responseConsulta.getBody().asString();
 
-        assertEquals("Médico já possui outra consulta agendada nesse mesmo horário", response400);
+        assertEquals(messagesPropertiesUtils.getPropertyMessage("messageOutraConsultaComMesmoMedicoMesmoHorario"), response400);
 
     }
 
@@ -423,7 +426,7 @@ public class ConsultaTest extends BaseTest {
 
         String response400 = responseConsulta.getBody().asString();
 
-        assertEquals("Consulta não pode ser agendada com paciente excluído", response400);
+        assertEquals(messagesPropertiesUtils.getPropertyMessage("messageConsultaPacienteExcluido"), response400);
 
     }
 
@@ -465,7 +468,7 @@ public class ConsultaTest extends BaseTest {
 
         String response400 = responseConsulta.getBody().asString();
 
-        assertEquals("Paciente já possui uma consulta agendada nesse dia", response400);
+        assertEquals(messagesPropertiesUtils.getPropertyMessage("messagePacientePossuiConsultaMesmoDia"), response400);
 
     }
 
