@@ -22,7 +22,6 @@ public class PacienteUtils {
         .when()
             .post("/pacientes")
         .then()
-            .log().all()
             .assertThat()
                 .statusCode(HttpStatus.SC_CREATED)
                 .extract()
@@ -45,7 +44,6 @@ public class PacienteUtils {
         .when()
             .get("/pacientes/" + id)
         .then()
-            .log().all()
             .assertThat()
                 .statusCode(HttpStatus.SC_OK)
                 .extract()
@@ -68,7 +66,6 @@ public class PacienteUtils {
         .when()
             .delete("/pacientes/" + idPaciente)
         .then()
-            .log().all()
             .assertThat()
             .statusCode(HttpStatus.SC_NO_CONTENT);
 

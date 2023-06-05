@@ -43,7 +43,6 @@ public class MedicoTest extends BaseTest {
             .when()
                 .post("/medicos")
             .then()
-                .log().all()
                 .assertThat()
                 .statusCode(HttpStatus.SC_CREATED);
 
@@ -79,7 +78,6 @@ public class MedicoTest extends BaseTest {
         .when()
             .put("/medicos")
         .then()
-            .log().all()
             .assertThat()
                 .statusCode(HttpStatus.SC_OK)
                 .body("nome", Matchers.equalTo(novoNome));
@@ -119,7 +117,6 @@ public class MedicoTest extends BaseTest {
         .when()
             .put("/medicos")
         .then()
-            .log().all()
             .assertThat()
                 .statusCode(HttpStatus.SC_OK)
                 .body("endereco.numero", Matchers.equalTo(novoNumeroEndereco));
@@ -146,7 +143,6 @@ public class MedicoTest extends BaseTest {
         .when()
             .delete("/medicos/" + medicoCadastrado.id)
         .then()
-            .log().all()
             .assertThat()
             .statusCode(HttpStatus.SC_NO_CONTENT);
 

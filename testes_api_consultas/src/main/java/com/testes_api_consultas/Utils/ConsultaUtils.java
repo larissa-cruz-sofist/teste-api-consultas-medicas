@@ -22,7 +22,6 @@ public class ConsultaUtils {
             .when()
                 .post("/consultas")
             .then()
-                .log().all()
                 .assertThat()
                 .statusCode(HttpStatus.SC_OK)
                 .extract()

@@ -42,7 +42,6 @@ public class PacienteTest extends BaseTest {
             .when()
                 .post("/pacientes")
             .then()
-                .log().all()
                 .assertThat()
                 .statusCode(HttpStatus.SC_CREATED);
 
@@ -78,7 +77,6 @@ public class PacienteTest extends BaseTest {
         .when()
             .put("/pacientes")
         .then()
-            .log().all()
             .assertThat()
                 .statusCode(HttpStatus.SC_OK)
                 .body("nome", Matchers.equalTo(novoNome));
@@ -118,7 +116,6 @@ public class PacienteTest extends BaseTest {
         .when()
             .put("/pacientes")
         .then()
-            .log().all()
             .assertThat()
                 .statusCode(HttpStatus.SC_OK)
                 .body("endereco.numero", Matchers.equalTo(novoNumeroEndereco));
@@ -145,7 +142,6 @@ public class PacienteTest extends BaseTest {
         .when()
             .delete("/pacientes/" + pacienteCadastrado.id)
         .then()
-            .log().all()
             .assertThat()
             .statusCode(HttpStatus.SC_NO_CONTENT);
 

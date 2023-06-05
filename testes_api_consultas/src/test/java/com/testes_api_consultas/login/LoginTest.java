@@ -27,7 +27,6 @@ public class LoginTest extends BaseTest {
         .then()
             .assertThat()
                 .statusCode(200)
-                .log().all()
                 .extract()
                 .path("token");
     }

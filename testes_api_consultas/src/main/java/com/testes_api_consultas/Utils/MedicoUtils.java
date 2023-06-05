@@ -22,7 +22,6 @@ public class MedicoUtils {
             .when()
                 .post("/medicos")
             .then()
-                .log().all()
                 .assertThat()
                     .statusCode(HttpStatus.SC_CREATED)
                     .extract()
@@ -45,7 +44,6 @@ public class MedicoUtils {
         .when()
             .get("/medicos/" + id)
         .then()
-            .log().all()
             .assertThat()
                 .statusCode(HttpStatus.SC_OK)
                 .extract()
@@ -68,7 +66,6 @@ public class MedicoUtils {
         .when()
             .delete("/medicos/" + idMedico)
         .then()
-            .log().all()
             .assertThat()
             .statusCode(HttpStatus.SC_NO_CONTENT);
 
