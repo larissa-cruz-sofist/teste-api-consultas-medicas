@@ -33,5 +33,27 @@ public class ConsultaUtils {
         return consultaCadastrada;
                 
     }
+
+    public Consulta requestObterConsultaPorId(String id) {
+        
+        LoginUtils loginUtils = new LoginUtils();
+        String token = loginUtils.requestLoginGetToken();
+
+        Response responseConsulta = (Response) given()
+        .header("Authorization","Bearer " + token)
+        .when()
+            .get("/consultas/" + id)
+        .then()
+            .assertThat()
+                .statusCode(HttpStatus.SC_OK)
+                .extract()
+                .response();
+
+        Gson gson = new Gson();
+        Consulta consulta = gson.fromJson(responseConsulta.asString(), Consulta.class);
+
+        return consulta;
+
+    }
     
 }
