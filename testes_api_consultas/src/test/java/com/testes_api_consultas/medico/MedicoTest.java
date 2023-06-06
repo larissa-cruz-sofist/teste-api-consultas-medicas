@@ -3,6 +3,7 @@ package com.testes_api_consultas.medico;
 import io.restassured.http.ContentType;
 
 import static io.restassured.RestAssured.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import org.hamcrest.Matchers;
@@ -148,6 +149,7 @@ public class MedicoTest extends BaseTest {
 
         Medico medicoCancelado = medicoUtils.requestObterMedicoPorId(medicoCadastrado.id);
         assertFalse(medicoCancelado.ativo);
+        assertEquals(medicoCancelado.id, medicoCadastrado.id);
     }
 
 }

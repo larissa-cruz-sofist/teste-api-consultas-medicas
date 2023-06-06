@@ -8,10 +8,12 @@ import java.time.temporal.TemporalAdjusters;
 
 public class Consulta {
 
+    public String id;
     public String idPaciente;
     public String especialidade;
     public String data;
     public String idMedico;
+    public Boolean ativo;
 
     public Consulta() {
 

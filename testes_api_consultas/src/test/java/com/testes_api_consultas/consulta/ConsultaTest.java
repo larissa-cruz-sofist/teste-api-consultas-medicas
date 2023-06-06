@@ -470,4 +470,38 @@ public class ConsultaTest extends BaseTest {
 
     }
 
+    @Test
+    @DisplayName("Teste excluir consulta pelo id")
+    public void testExcluirConsultaPeloIdComStatus204() {
+
+        Paciente paciente = new Paciente().criarPaciente();
+        Gson gson = new GsonBuilder().create();
+        String bodyPaciente = gson.toJson(paciente);
+
+        PacienteUtils pacienteUtils = new PacienteUtils();
+        Paciente objPacienteResponse = pacienteUtils.requestCadastrarPaciente(bodyPaciente);
+
+        Consulta consulta = new Consulta().criarConsultaEspecialidadeDefinida(objPacienteResponse.id, 10, 0, DayOfWeek.WEDNESDAY, EspecialidadeMedico.GINECOLOGIA);
+        String bodyConsulta = gson.toJson(consulta);
+
+        ConsultaUtils consultaUtils = new ConsultaUtils();
+        Consulta objConsulta = consultaUtils.requestCadastrarConsulta(bodyConsulta);
+
+        LoginUtils loginUtils = new LoginUtils();
+        String token = loginUtils.requestLoginGetToken();
+
+        given()
+        .header("Authorization", "Bearer " + token)
+        .when()
+            .delete("/consultas/" + objConsulta.id)
+        .then()
+            .assertThat()
+            .statusCode(HttpStatus.SC_NO_CONTENT);
+
+        Consulta consultaCancelada = consultaUtils.requestObterConsultaPorId(objConsulta.id);
+        assertFalse(consultaCancelada.ativo);
+        assertEquals(consultaCancelada.id, objConsulta.id);
+
+    }
+
 }
