@@ -1,6 +1,7 @@
 package com.testes_api_consultas.paciente;
 
 import static io.restassured.RestAssured.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import org.hamcrest.Matchers;
@@ -147,6 +148,7 @@ public class PacienteTest extends BaseTest {
 
         Paciente pacienteCancelado = pacienteUtils.requestObterPacientePorId(pacienteCadastrado.id);
         assertFalse(pacienteCancelado.ativo);
+        assertEquals(pacienteCancelado.id, pacienteCadastrado.id);
 
     }
     

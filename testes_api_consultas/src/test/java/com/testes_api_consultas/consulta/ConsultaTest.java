@@ -500,6 +500,7 @@ public class ConsultaTest extends BaseTest {
 
         Consulta consultaCancelada = consultaUtils.requestObterConsultaPorId(objConsulta.id);
         assertFalse(consultaCancelada.ativo);
+        assertEquals(consultaCancelada.id, objConsulta.id);
 
     }
 
