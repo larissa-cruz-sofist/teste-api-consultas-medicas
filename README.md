@@ -1,5 +1,5 @@
 # Projeto de Testes Integrados - API Consultas Médicas com Banco de Dados H2
-O presente projeto desenvolvido por mim, visa testar a API (https://github.com/larissa-cruz-sofist/api-spring-boot-consultas-medicas). Este projeto foi criado de forma autônoma à API Consultas Médicas desenvolvida por mim em treinamento.
+O presente projeto desenvolvido visa testar a API (https://github.com/larissa-cruz-sofist/api-spring-boot-consultas-medicas). Este projeto foi criado de forma autônoma à API Consultas Médicas desenvolvida por mim em treinamento.
 
 Neste projeto são realizados testes de integração com banco de dados em memória, simulando cadastro e alteração de médicos e pacientes, bem como, agendamento de consultas e exclusão lógica de médicos, pacientes e consultas.
 
