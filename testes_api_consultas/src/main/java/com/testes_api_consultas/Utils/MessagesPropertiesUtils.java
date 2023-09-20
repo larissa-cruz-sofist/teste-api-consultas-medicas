@@ -8,7 +8,7 @@ public class MessagesPropertiesUtils {
 
     public String getPropertyMessage(String valorChave) {
 
-        String appConfigPath = "/C:/Users/larissa.cruz_sofist/Desktop/Projetos/testes-api-consultas/testes_api_consultas/src/test/java/com/testes_api_consultas/resources/messages.properties";
+        String appConfigPath = "C:/temp/teste-api-consultas-medicas/testes_api_consultas/src/test/java/com/testes_api_consultas/resources/messages.properties";
         Properties appProps = new Properties();
 
         try{
