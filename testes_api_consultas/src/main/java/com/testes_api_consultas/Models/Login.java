@@ -6,7 +6,7 @@ public class Login {
     public String senha;
 
     public Login() {
-        this.login = "ana.souza@voll.med";
+        this.login = "admin@admin.com";
         this.senha = "123456";
     }
 }

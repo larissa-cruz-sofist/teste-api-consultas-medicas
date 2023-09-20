@@ -1,2 +1,5 @@
 testes_api_consultas/target
 testes_api_consultas/allure-results
+
+.vscode/
+testes_api_consultas/.vscode/
