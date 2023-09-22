@@ -17,3 +17,4 @@ Neste projeto são realizados testes de integração com banco de dados em memó
 #### Contributing
 * Console do banco de dados H2: http://www.localhost:8080/h2-console
 * Swagger: http://www.localhost:8080/swagger-ui/index.html
+* Para gerar o relatório de testes allure report é necessário rodar os seguintes comandos dentro da pasta do projeto no terminal: **npm install -g allure-commandline** após, **allure serve allure-results**
